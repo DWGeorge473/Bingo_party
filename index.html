@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Virtual Bingo Party</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #050816;
+      --card-bg: #0f172a;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.18);
+      --accent-strong: #facc15;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --danger: #f97373;
+      --radius-lg: 18px;
+      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.8);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1d2438 0, #020617 40%, #000 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 16px 16px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    header {
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: clamp(1.6rem, 3.2vw, 2.1rem);
+      margin: 0 0 4px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    header p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.82);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.2);
+    }
+
+    .mode-switch {
+      display: flex;
+      gap: 8px;
+      background: rgba(15, 23, 42, 0.92);
+      border-radius: 999px;
+      padding: 4px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      width: fit-content;
+      margin: 0 auto;
+    }
+
+    .mode-btn {
+      flex: 1;
+      border-radius: 999px;
+      border: none;
+      padding: 8px 16px;
+      font-size: 0.86rem;
+      font-weight: 500;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.18s ease-out;
+      white-space: nowrap;
+    }
+
+    .mode-btn span.emoji {
+      font-size: 1.02rem;
+    }
+
+    .mode-btn.active {
+      background: linear-gradient(135deg, var(--accent-soft), rgba(37, 99, 235, 0.4));
+      color: #e5f3ff;
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.8), 0 12px 30px rgba(15, 23, 42, 0.9);
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 780px) {
+      main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card-shell {
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.08), transparent 60%),
+                  radial-gradient(circle at bottom right, rgba(244, 244, 245, 0.04), transparent 60%),
+                  linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.96));
+      border-radius: var(--radius-lg);
+      padding: 14px 14px 16px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-shell::before {
+      content: "";
+      position: absolute;
+      inset: -40px;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.04) 0, transparent 55%),
+        radial-gradient(circle at 120% 0%, rgba(244, 244, 245, 0.04) 0, transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .card-shell-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #e5f3ff;
+    }
+
+    .section-subtitle {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.5);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    .pattern-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+
+    .pattern-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pattern-label span.dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.5);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.9);
+    }
+
+    .pattern-select {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--text);
+      padding: 5px 10px;
+      font-size: 0.8rem;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.9);
+    }
+
+    .card-switcher {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .card-switch-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      padding: 2px 6px;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.9);
+    }
+
+    .card-switch-btn {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      padding: 4px 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-switch-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      padding: 0 4px;
+      white-space: nowrap;
+    }
+
+    .card-switch-label strong {
+      color: #e5f3ff;
+    }
+
+    .card-add-btn {
+      border-radius: 999px;
+      border: 1px dashed rgba(148, 163, 184, 0.8);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--muted);
+      padding: 4px 8px;
+      font-size: 0.78rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.9);
+    }
+
+    .card-add-btn span.icon {
+      font-size: 0.9rem;
+    }
+
+    .bingo-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .bingo-header-cell {
+      text-align: center;
+      padding: 6px 0;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      border-radius: 14px;
+      background: linear-gradient(to bottom right, rgba(15, 23, 42, 0.96), rgba(30, 64, 175, 0.9));
+      color: #e5f3ff;
+      font-size: 0.9rem;
+      border: 1px solid rgba(148, 163, 184, 0.65);
+      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.85);
+    }
+
+    .bingo-cell {
+      position: relative;
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9));
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #e5f3ff;
+      cursor: pointer;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.85);
+      transition: all 0.14s ease-out;
+    }
+
+    @media (max-width: 420px) {
+      .bingo-cell {
+        min-height: 46px;
+        font-size: 0.95rem;
+      }
+      .bingo-header-cell {
+        font-size: 0.85rem;
+      }
+    }
+
+    .bingo-cell span.value {
+      position: relative;
+      z-index: 1;
+    }
+
+    .bingo-cell.free span.value {
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+
+    .bingo-cell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.06), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.14s ease-out;
+    }
+
+    .bingo-cell::after {
+      content: "";
+      position: absolute;
+      width: 160%;
+      height: 160%;
+      background:
+        radial-gradient(circle at center, rgba(56, 189, 248, 0.16), transparent 60%),
+        radial-gradient(circle at center, rgba(56, 189, 248, 0.3), transparent 40%);
+      opacity: 0;
+      transform: scale(0.9);
+      transition: opacity 0.16s ease-out, transform 0.16s ease-out;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    .bingo-cell.marked {
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.96));
+      border-color: rgba(56, 189, 248, 0.9);
+      color: var(--accent-strong);
+      transform: translateY(1px) scale(0.98);
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.9), 0 0 0 1px rgba(56, 189, 248, 0.6);
+    }
+
+    .bingo-cell.marked::before {
+      opacity: 1;
+    }
+
+    .bingo-cell.marked::after {
+      opacity: 0.7;
+      transform: scale(1);
+    }
+
+    .bingo-cell:active {
+      transform: translateY(2px) scale(0.97);
+    }
+
+    .controls-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .controls-row-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .controls-row-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border-radius: 999px;
+      border: none;
+      padding: 7px 13px;
+      font-size: 0.86rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      background: rgba(15, 23, 42, 0.96);
+      color: var(--text);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.9);
+      transition: all 0.16s ease-out;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, #38bdf8, #2563eb);
+      border-color: rgba(56, 189, 248, 0.9);
+      color: #0b1220;
+      box-shadow:
+        0 0 0 1px rgba(15, 23, 42, 0.5),
+        0 16px 32px rgba(37, 99, 235, 0.65);
+    }
+
+    .btn.subtle {
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--muted);
+    }
+
+    .btn.danger {
+      background: rgba(127, 29, 29, 0.9);
+      color: #fee2e2;
+      border-color: rgba(248, 113, 113, 0.8);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        0 10px 26px rgba(15, 23, 42, 0.95),
+        0 0 0 1px rgba(148, 163, 184, 0.7);
+    }
+
+    .btn.primary:hover {
+      box-shadow:
+        0 0 0 1px rgba(56, 189, 248, 1),
+        0 18px 34px rgba(37, 99, 235, 0.8);
+    }
+
+    .btn:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow:
+        0 6px 20px rgba(15, 23, 42, 0.9),
+        0 0 0 1px rgba(148, 163, 184, 0.7);
+    }
+
+    .hint {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hint-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.4);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.9);
+    }
+
+    .bingo-banner {
+      margin-top: 10px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(250, 204, 21, 0.12), rgba(22, 163, 74, 0.12));
+      border: 1px solid rgba(250, 204, 21, 0.4);
+      font-size: 0.86rem;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      color: #fef9c3;
+    }
+
+    .bingo-banner.visible {
+      display: flex;
+    }
+
+    .bingo-banner .label {
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      opacity: 0.9;
+    }
+
+    .bingo-banner .msg {
+      font-weight: 500;
+    }
+
+    /* Host panel */
+
+    .host-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .host-main-number {
+      text-align: center;
+      padding: 12px 10px;
+      border-radius: 16px;
+      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.1), rgba(15, 23, 42, 0.96));
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.95);
+    }
+
+    .host-main-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .host-main-call {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .host-main-call span.prefix {
+      color: var(--accent);
+    }
+
+    .host-main-call span.number {
+      color: #e5f3ff;
+    }
+
+    .host-history {
+      border-radius: 14px;
+      padding: 8px 9px;
+      background: rgba(15, 23, 42, 0.94);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      max-height: 190px;
+      overflow-y: auto;
+      font-size: 0.82rem;
+    }
+
+    .host-history-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      font-size: 0.8rem;
+    }
+
+    .host-history-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .host-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.96);
+      font-size: 0.78rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .host-pill .prefix {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .host-pill .num {
+      color: #e5f3ff;
+      font-weight: 500;
+    }
+
+    .host-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    footer {
+      margin-top: 4px;
+      text-align: center;
+      font-size: 0.76rem;
+      color: var(--muted);
+      opacity: 0.75;
+    }
+
+    footer strong {
+      font-weight: 600;
+      color: rgba(148, 163, 184, 0.95);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Confetti overlay */
+
+    .confetti-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 50;
+      display: none;
+    }
+
+    .confetti-overlay.active {
+      display: block;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      width: 8px;
+      height: 14px;
+      border-radius: 2px;
+      opacity: 0;
+      animation: confetti-fall 1.4s linear forwards;
+    }
+
+    @keyframes confetti-fall {
+      0% {
+        transform: translate3d(0, -40px, 0) rotateZ(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate3d(var(--x-move, 0), 120vh, 0) rotateZ(340deg);
+        opacity: 0;
+      }
+    }
+
+    .bingo-toast {
+      position: fixed;
+      left: 50%;
+      top: 14px;
+      transform: translateX(-50%) translateY(-40px);
+      background: radial-gradient(circle at top, rgba(250, 204, 21, 0.18), rgba(15, 23, 42, 0.98));
+      border-radius: 999px;
+      padding: 8px 16px;
+      border: 1px solid rgba(250, 204, 21, 0.7);
+      color: #fef9c3;
+      font-size: 0.86rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.95);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.24s ease-out, transform 0.24s ease-out;
+      z-index: 51;
+      backdrop-filter: blur(14px);
+    }
+
+    .bingo-toast.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .bingo-toast span.icon {
+      font-size: 1.15rem;
+    }
+
+    .bingo-toast span.text {
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="confetti-overlay" id="confettiOverlay"></div>
+  <div class="bingo-toast" id="bingoToast">
+    <span class="icon">🎉</span>
+    <span class="text" id="bingoToastText">Bingo! Announce it on Zoom 🎙️</span>
+  </div>
+
+  <div class="app">
+    <header>
+      <div class="pill">
+        <span class="pill-dot"></span>
+        <span>Connected on Zoom • Tap squares as the host calls numbers</span>
+      </div>
+      <h1>Virtual Bingo Party</h1>
+      <p>Keep this open on your phone, mark your numbers, and shout “BINGO!” when you match the pattern.</p>
+      <div class="mode-switch" aria-label="Choose player or host view">
+        <button class="mode-btn active" data-mode="player" id="playerModeBtn">
+          <span class="emoji">📱</span>
+          <span>Player Cards</span>
+        </button>
+        <button class="mode-btn" data-mode="host" id="hostModeBtn">
+          <span class="emoji">🎙️</span>
+          <span>Host Caller</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="card-shell" id="playerPanel">
+        <div class="card-shell-inner">
+          <div class="section-header">
+            <div>
+              <h2>My Bingo Cards</h2>
+              <p class="section-subtitle">Tap a square when you hear that number. Use the arrows to switch cards.</p>
+            </div>
+            <span class="badge">
+              <span>Up to 4 cards</span> • <span>Pattern wins</span>
+            </span>
+          </div>
+
+          <div class="pattern-row">
+            <div class="pattern-label">
+              <span class="dot"></span>
+              <span>Winning pattern (match what your host announces)</span>
+            </div>
+            <select id="patternSelect" class="pattern-select">
+              <option value="line">Line – any row, column, or diagonal</option>
+              <option value="x">X pattern – both diagonals</option>
+              <option value="corners">Four corners only</option>
+              <option value="full">Full card (blackout)</option>
+            </select>
+          </div>
+
+          <div class="card-switcher">
+            <div class="card-switch-main">
+              <button class="card-switch-btn" id="prevCardBtn" type="button" aria-label="Show previous card">◀</button>
+              <div class="card-switch-label">
+                <span id="cardLabel"><strong>Card 1</strong> of 1</span>
+              </div>
+              <button class="card-switch-btn" id="nextCardBtn" type="button" aria-label="Show next card">▶</button>
+            </div>
+            <button class="card-add-btn" id="addCardBtn" type="button">
+              <span class="icon">➕</span>
+              <span>Add another card</span>
+            </button>
+          </div>
+
+          <div class="bingo-grid" id="bingoGrid">
+            <!-- Header + cells rendered via JS -->
+          </div>
+
+          <div class="controls-row">
+            <div class="controls-row-left">
+              <button class="btn subtle" id="clearMarksBtn" type="button">
+                ✖️ Clear marks on this card
+              </button>
+            </div>
+            <div class="controls-row-right">
+              <button class="btn" id="newCardBtn" type="button">
+                🔁 New numbers on this card
+              </button>
+            </div>
+          </div>
+
+          <div class="controls-row" style="margin-top: 6px;">
+            <div class="controls-row-left">
+              <button class="btn danger" id="resetAllBtn" type="button">
+                🧹 Reset all cards on this device
+              </button>
+            </div>
+          </div>
+
+          <div class="bingo-banner" id="bingoBanner">
+            <div>
+              <div class="label">Bingo detected</div>
+              <div class="msg" id="bingoBannerMsg">You have a winning pattern on this card. Tell the host your card number.</div>
+            </div>
+            <span>🎉</span>
+          </div>
+
+          <div class="hint">
+            <span class="hint-dot"></span>
+            <span>The center square is FREE and starts marked for you.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card-shell hidden" id="hostPanel">
+        <div class="card-shell-inner">
+          <div class="section-header">
+            <div>
+              <h2>Host Caller Tools</h2>
+              <p class="section-subtitle">Use this on your laptop to draw numbers and share your screen with players.</p>
+            </div>
+            <span class="badge">
+              <span>75-ball</span> • <span>Classic BINGO</span>
+            </span>
+          </div>
+
+          <div class="host-layout">
+            <div class="host-main-number">
+              <div class="host-main-label">Current number to call</div>
+              <div class="host-main-call" id="currentCallDisplay">
+                <span class="prefix">—</span>
+                <span class="number">—</span>
+              </div>
+            </div>
+
+            <div class="host-actions">
+              <button class="btn primary" id="nextNumberBtn" type="button">
+                🎲 Draw next number
+              </button>
+              <button class="btn subtle" id="resetCallerBtn" type="button">
+                🔁 Reset all numbers
+              </button>
+            </div>
+
+            <div class="host-history">
+              <div class="host-history-title">
+                <span>Numbers already called</span>
+                <span id="calledCountLabel">0 / 75</span>
+              </div>
+              <div class="host-history-list" id="calledNumbersList">
+                <!-- Pills added here -->
+              </div>
+            </div>
+
+            <div class="hint">
+              <span class="hint-dot"></span>
+              <span>Before you start, tell everyone which pattern wins this round (line, X, corners, or full card).</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      Phones and tablets should stay on <strong>Player Cards</strong>. One device on Zoom can use <strong>Host Caller</strong> to run the game for everyone.
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      const MAX_CARDS = 4;
+
+      const bingoGrid = document.getElementById("bingoGrid");
+      const newCardBtn = document.getElementById("newCardBtn");
+      const clearMarksBtn = document.getElementById("clearMarksBtn");
+      const resetAllBtn = document.getElementById("resetAllBtn");
+      const bingoBanner = document.getElementById("bingoBanner");
+      const bingoBannerMsg = document.getElementById("bingoBannerMsg");
+      const confettiOverlay = document.getElementById("confettiOverlay");
+      const bingoToast = document.getElementById("bingoToast");
+      const bingoToastText = document.getElementById("bingoToastText");
+
+      const playerModeBtn = document.getElementById("playerModeBtn");
+      const hostModeBtn = document.getElementById("hostModeBtn");
+      const playerPanel = document.getElementById("playerPanel");
+      const hostPanel = document.getElementById("hostPanel");
+
+      const nextNumberBtn = document.getElementById("nextNumberBtn");
+      const resetCallerBtn = document.getElementById("resetCallerBtn");
+      const currentCallDisplay = document.getElementById("currentCallDisplay");
+      const calledNumbersList = document.getElementById("calledNumbersList");
+      const calledCountLabel = document.getElementById("calledCountLabel");
+
+      const prevCardBtn = document.getElementById("prevCardBtn");
+      const nextCardNavBtn = document.getElementById("nextCardBtn");
+      const addCardBtn = document.getElementById("addCardBtn");
+      const cardLabel = document.getElementById("cardLabel");
+      const patternSelect = document.getElementById("patternSelect");
+
+      let cards = [];
+      let activeCardIndex = 0;
+      let currentPattern = "line";
+
+      let callerPool = [];
+      let callerHistory = [];
+
+      function range(start, endInclusive) {
+        const arr = [];
+        for (let v = start; v <= endInclusive; v++) {
+          arr.push(v);
+        }
+        return arr;
+      }
+
+      function shuffle(array) {
+        const copy = array.slice();
+        for (let i = copy.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+      }
+
+      function createCardData() {
+        const ranges = [
+          [1, 15],
+          [16, 30],
+          [31, 45],
+          [46, 60],
+          [61, 75]
+        ];
+
+        const numbers = [];
+        const marked = [];
+
+        for (let r = 0; r < 5; r++) {
+          numbers[r] = [];
+          marked[r] = [];
+          for (let c = 0; c < 5; c++) {
+            numbers[r][c] = null;
+            marked[r][c] = false;
+          }
+        }
+
+        for (let col = 0; col < 5; col++) {
+          const [min, max] = ranges[col];
+          const nums = shuffle(range(min, max));
+          let idx = 0;
+          for (let row = 0; row < 5; row++) {
+            if (row === 2 && col === 2) {
+              continue;
+            }
+            numbers[row][col] = nums[idx++];
+          }
+        }
+
+        numbers[2][2] = null;
+        marked[2][2] = true;
+
+        return {
+          numbers,
+          marked,
+          bingoShown: false
+        };
+      }
+
+      function renderActiveCard() {
+        bingoGrid.innerHTML = "";
+
+        "BINGO".split("").forEach((letter) => {
+          const headerCell = document.createElement("div");
+          headerCell.className = "bingo-header-cell";
+          headerCell.textContent = letter;
+          bingoGrid.appendChild(headerCell);
+        });
+
+        const card = cards[activeCardIndex];
+        if (!card) return;
+
+        for (let r = 0; r < 5; r++) {
+          for (let c = 0; c < 5; c++) {
+            const cellBtn = document.createElement("button");
+            cellBtn.type = "button";
+            const isFree = r === 2 && c === 2;
+            cellBtn.dataset.row = String(r);
+            cellBtn.dataset.col = String(c);
+            cellBtn.dataset.free = isFree ? "true" : "false";
+            cellBtn.className = "bingo-cell";
+            if (isFree) {
+              cellBtn.classList.add("free");
+            }
+
+            const span = document.createElement("span");
+            span.className = "value";
+            if (isFree) {
+              span.textContent = "FREE";
+            } else {
+              span.textContent = String(card.numbers[r][c]);
+            }
+            cellBtn.appendChild(span);
+
+            if (card.marked[r][c]) {
+              cellBtn.classList.add("marked");
+            }
+
+            cellBtn.addEventListener("click", () => {
+              handleCellClick(r, c, cellBtn);
+            });
+
+            bingoGrid.appendChild(cellBtn);
+          }
+        }
+
+        updateCardLabel();
+      }
+
+      function handleCellClick(row, col, cellEl) {
+        const isFree = cellEl.dataset.free === "true";
+        if (isFree) {
+          return;
+        }
+        const card = cards[activeCardIndex];
+        card.marked[row][col] = !card.marked[row][col];
+        cellEl.classList.toggle("marked", card.marked[row][col]);
+        checkForBingo(card);
+      }
+
+      function updateCardLabel() {
+        const humanIndex = activeCardIndex + 1;
+        cardLabel.innerHTML = "<strong>Card " + humanIndex + "</strong> of " + cards.length;
+      }
+
+      function patternName(patternKey) {
+        switch (patternKey) {
+          case "line":
+            return "line bingo";
+          case "x":
+            return "X pattern bingo";
+          case "corners":
+            return "four corners bingo";
+          case "full":
+            return "full card bingo";
+          default:
+            return "bingo";
+        }
+      }
+
+      function hasLine(marked) {
+        const size = 5;
+
+        for (let r = 0; r < size; r++) {
+          let rowFull = true;
+          for (let c = 0; c < size; c++) {
+            if (!marked[r][c]) {
+              rowFull = false;
+              break;
+            }
+          }
+          if (rowFull) return true;
+        }
+
+        for (let c = 0; c < size; c++) {
+          let colFull = true;
+          for (let r = 0; r < size; r++) {
+            if (!marked[r][c]) {
+              colFull = false;
+              break;
+            }
+          }
+          if (colFull) return true;
+        }
+
+        let diag1 = true;
+        let diag2 = true;
+        for (let i = 0; i < size; i++) {
+          if (!marked[i][i]) diag1 = false;
+          if (!marked[i][size - 1 - i]) diag2 = false;
+        }
+        return diag1 || diag2;
+      }
+
+      function hasX(marked) {
+        let diag1 = true;
+        let diag2 = true;
+        const size = 5;
+        for (let i = 0; i < size; i++) {
+          if (!marked[i][i]) diag1 = false;
+          if (!marked[i][size - 1 - i]) diag2 = false;
+        }
+        return diag1 && diag2;
+      }
+
+      function hasCorners(marked) {
+        return (
+          marked[0][0] &&
+          marked[0][4] &&
+          marked[4][0] &&
+          marked[4][4]
+        );
+      }
+
+      function hasFull(marked) {
+        for (let r = 0; r < 5; r++) {
+          for (let c = 0; c < 5; c++) {
+            if (!marked[r][c]) return false;
+          }
+        }
+        return true;
+      }
+
+      function checkForBingo(card) {
+        let hasBingo = false;
+        if (!card) return;
+
+        if (currentPattern === "line") {
+          hasBingo = hasLine(card.marked);
+        } else if (currentPattern === "x") {
+          hasBingo = hasX(card.marked);
+        } else if (currentPattern === "corners") {
+          hasBingo = hasCorners(card.marked);
+        } else if (currentPattern === "full") {
+          hasBingo = hasFull(card.marked);
+        }
+
+        if (hasBingo && !card.bingoShown) {
+          card.bingoShown = true;
+          const humanIndex = activeCardIndex + 1;
+          bingoBannerMsg.textContent =
+            "You have " + patternName(currentPattern) + " on Card " + humanIndex + ". Tell the host your card number.";
+          bingoBanner.classList.add("visible");
+          bingoToastText.textContent = "Bingo on Card " + humanIndex + "! Announce it on Zoom 🎙️";
+          triggerConfetti();
+          showToast();
+        }
+      }
+
+      function triggerConfetti() {
+        if (!confettiOverlay) return;
+        confettiOverlay.innerHTML = "";
+        confettiOverlay.classList.add("active");
+        const colors = ["#38bdf8", "#facc15", "#22c55e", "#f97316", "#e11d48"];
+
+        const COUNT = 80;
+        for (let i = 0; i < COUNT; i++) {
+          const piece = document.createElement("div");
+          piece.className = "confetti-piece";
+          const color = colors[i % colors.length];
+          piece.style.backgroundColor = color;
+          const left = Math.random() * 100;
+          const delay = Math.random() * 0.6;
+          const xMove = (Math.random() * 160 - 80).toFixed(1);
+          piece.style.left = left + "%";
+          piece.style.animationDelay = delay + "s";
+          piece.style.setProperty("--x-move", xMove + "px");
+          confettiOverlay.appendChild(piece);
+        }
+
+        setTimeout(() => {
+          confettiOverlay.classList.remove("active");
+          confettiOverlay.innerHTML = "";
+        }, 1800);
+      }
+
+      let toastTimeout;
+      function showToast() {
+        if (!bingoToast) return;
+        clearTimeout(toastTimeout);
+        bingoToast.classList.add("visible");
+        toastTimeout = setTimeout(() => {
+          hideToast();
+        }, 4200);
+      }
+
+      function hideToast() {
+        if (!bingoToast) return;
+        bingoToast.classList.remove("visible");
+      }
+
+      function clearMarksForActiveCard() {
+        const card = cards[activeCardIndex];
+        if (!card) return;
+        for (let r = 0; r < 5; r++) {
+          for (let c = 0; c < 5; c++) {
+            card.marked[r][c] = false;
+          }
+        }
+        card.marked[2][2] = true;
+        card.bingoShown = false;
+        bingoBanner.classList.remove("visible");
+        hideToast();
+        renderActiveCard();
+      }
+
+      function replaceActiveCardWithNew() {
+        cards[activeCardIndex] = createCardData();
+        bingoBanner.classList.remove("visible");
+        hideToast();
+        renderActiveCard();
+      }
+
+      function resetAllCards() {
+        if (!confirm("Reset all cards on this device and start fresh?")) return;
+        cards = [createCardData()];
+        activeCardIndex = 0;
+        patternSelect.value = "line";
+        currentPattern = "line";
+        bingoBanner.classList.remove("visible");
+        hideToast();
+        renderActiveCard();
+      }
+
+      newCardBtn.addEventListener("click", () => {
+        replaceActiveCardWithNew();
+      });
+
+      clearMarksBtn.addEventListener("click", () => {
+        clearMarksForActiveCard();
+      });
+
+      resetAllBtn.addEventListener("click", () => {
+        resetAllCards();
+      });
+
+      function setMode(mode) {
+        const isPlayer = mode === "player";
+        playerModeBtn.classList.toggle("active", isPlayer);
+        hostModeBtn.classList.toggle("active", !isPlayer);
+        playerPanel.classList.toggle("hidden", !isPlayer);
+        hostPanel.classList.toggle("hidden", isPlayer);
+      }
+
+      playerModeBtn.addEventListener("click", () => {
+        setMode("player");
+      });
+
+      hostModeBtn.addEventListener("click", () => {
+        setMode("host");
+      });
+
+      function initCaller() {
+        callerPool = range(1, 75);
+        callerHistory = [];
+        updateCallerDisplay(null);
+        updateCalledNumbersList();
+      }
+
+      function getLetterForNumber(num) {
+        if (num >= 1 && num <= 15) return "B";
+        if (num >= 16 && num <= 30) return "I";
+        if (num >= 31 && num <= 45) return "N";
+        if (num >= 46 && num <= 60) return "G";
+        if (num >= 61 && num <= 75) return "O";
+        return "";
+      }
+
+      function drawNextNumber() {
+        if (!callerPool.length) {
+          alert("All 75 numbers have been called.");
+          return;
+        }
+        const idx = Math.floor(Math.random() * callerPool.length);
+        const [num] = callerPool.splice(idx, 1);
+        callerHistory.unshift(num);
+        updateCallerDisplay(num);
+        updateCalledNumbersList();
+      }
+
+      function updateCallerDisplay(num) {
+        const prefixSpan = currentCallDisplay.querySelector(".prefix");
+        const numSpan = currentCallDisplay.querySelector(".number");
+        if (!num) {
+          prefixSpan.textContent = "—";
+          numSpan.textContent = "—";
+          return;
+        }
+        const letter = getLetterForNumber(num);
+        prefixSpan.textContent = letter;
+        numSpan.textContent = String(num);
+      }
+
+      function updateCalledNumbersList() {
+        calledNumbersList.innerHTML = "";
+        callerHistory.forEach((num) => {
+          const pill = document.createElement("div");
+          pill.className = "host-pill";
+          const letter = getLetterForNumber(num);
+          const prefix = document.createElement("span");
+          prefix.className = "prefix";
+          prefix.textContent = letter;
+          const n = document.createElement("span");
+          n.className = "num";
+          n.textContent = String(num);
+          pill.appendChild(prefix);
+          pill.appendChild(n);
+          calledNumbersList.appendChild(pill);
+        });
+        calledCountLabel.textContent = callerHistory.length + " / 75";
+      }
+
+      nextNumberBtn.addEventListener("click", () => {
+        drawNextNumber();
+      });
+
+      resetCallerBtn.addEventListener("click", () => {
+        if (confirm("Reset the caller and clear all numbers?")) {
+          initCaller();
+        }
+      });
+
+      prevCardBtn.addEventListener("click", () => {
+        if (cards.length <= 1) return;
+        activeCardIndex = (activeCardIndex - 1 + cards.length) % cards.length;
+        bingoBanner.classList.remove("visible");
+        hideToast();
+        renderActiveCard();
+      });
+
+      nextCardNavBtn.addEventListener("click", () => {
+        if (cards.length <= 1) return;
+        activeCardIndex = (activeCardIndex + 1) % cards.length;
+        bingoBanner.classList.remove("visible");
+        hideToast();
+        renderActiveCard();
+      });
+
+      addCardBtn.addEventListener("click", () => {
+        if (cards.length >= MAX_CARDS) {
+          alert("You can play up to " + MAX_CARDS + " cards on this device.");
+          return;
+        }
+        cards.push(createCardData());
+        activeCardIndex = cards.length - 1;
+        bingoBanner.classList.remove("visible");
+        hideToast();
+        renderActiveCard();
+      });
+
+      patternSelect.addEventListener("change", () => {
+        currentPattern = patternSelect.value;
+        bingoBanner.classList.remove("visible");
+        hideToast();
+        cards.forEach((card) => {
+          card.bingoShown = false;
+        });
+      });
+
+      function initPlayerSide() {
+        cards = [createCardData()];
+        activeCardIndex = 0;
+        patternSelect.value = "line";
+        currentPattern = "line";
+        bingoBanner.classList.remove("visible");
+        hideToast();
+        renderActiveCard();
+      }
+
+      initPlayerSide();
+      initCaller();
+      setMode("player");
+    })();
+  </script>
+</body>
+</html>
