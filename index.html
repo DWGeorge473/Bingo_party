@@ -38,10 +38,10 @@
       width: 100%;
       max-width: 900px;
       margin: 0 auto;
-      padding: 16px 16px 28px;
+      padding: 12px 16px 28px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 12px;
     }
 
     header {
@@ -49,53 +49,24 @@
     }
 
     header h1 {
-      font-size: clamp(1.6rem, 3.2vw, 2.1rem);
-      margin: 0 0 4px;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      margin: 0 0 8px;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
 
-    header p {
-      margin: 0;
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.82);
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    .pill-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #22c55e;
-      box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.2);
-    }
-
     .mode-switch {
-      display: flex;
+      display: inline-flex;
       gap: 8px;
       background: rgba(15, 23, 42, 0.92);
       border-radius: 999px;
       padding: 4px;
       border: 1px solid rgba(148, 163, 184, 0.4);
-      width: fit-content;
       margin: 0 auto;
     }
 
     .mode-btn {
-      flex: 1;
       border-radius: 999px;
       border: none;
       padding: 8px 16px;
@@ -138,7 +109,7 @@
                   radial-gradient(circle at bottom right, rgba(244, 244, 245, 0.04), transparent 60%),
                   linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.96));
       border-radius: var(--radius-lg);
-      padding: 14px 14px 16px;
+      padding: 10px 10px 12px;
       box-shadow: var(--shadow-soft);
       border: 1px solid rgba(148, 163, 184, 0.55);
       position: relative;
@@ -166,22 +137,16 @@
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       flex-wrap: wrap;
     }
 
     .section-header h2 {
       margin: 0;
-      font-size: 1rem;
+      font-size: 0.95rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: #e5f3ff;
-    }
-
-    .section-subtitle {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin: 0;
     }
 
     .badge {
@@ -197,107 +162,11 @@
       white-space: nowrap;
     }
 
-    .pattern-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-top: 4px;
-      flex-wrap: wrap;
-    }
-
-    .pattern-label {
-      font-size: 0.78rem;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .pattern-label span.dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: rgba(56, 189, 248, 0.5);
-      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.9);
-    }
-
-    .pattern-select {
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      background: rgba(15, 23, 42, 0.95);
-      color: var(--text);
-      padding: 5px 10px;
-      font-size: 0.8rem;
-      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.9);
-    }
-
-    .card-switcher {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
-      margin-top: 8px;
-      flex-wrap: wrap;
-    }
-
-    .card-switch-main {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.96);
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      padding: 2px 6px;
-      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.9);
-    }
-
-    .card-switch-btn {
-      border: none;
-      background: transparent;
-      color: var(--muted);
-      padding: 4px 6px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .card-switch-label {
-      font-size: 0.78rem;
-      color: var(--muted);
-      padding: 0 4px;
-      white-space: nowrap;
-    }
-
-    .card-switch-label strong {
-      color: #e5f3ff;
-    }
-
-    .card-add-btn {
-      border-radius: 999px;
-      border: 1px dashed rgba(148, 163, 184, 0.8);
-      background: rgba(15, 23, 42, 0.9);
-      color: var(--muted);
-      padding: 4px 8px;
-      font-size: 0.78rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      cursor: pointer;
-      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.9);
-    }
-
-    .card-add-btn span.icon {
-      font-size: 0.9rem;
-    }
-
     .bingo-grid {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 6px;
-      margin-top: 10px;
+      margin-top: 4px;
     }
 
     .bingo-header-cell {
@@ -319,7 +188,7 @@
       background: radial-gradient(circle at top, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9));
       border-radius: 14px;
       border: 1px solid rgba(148, 163, 184, 0.6);
-      min-height: 54px;
+      min-height: 58px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -334,8 +203,8 @@
 
     @media (max-width: 420px) {
       .bingo-cell {
-        min-height: 46px;
-        font-size: 0.95rem;
+        min-height: 52px;
+        font-size: 0.98rem;
       }
       .bingo-header-cell {
         font-size: 0.85rem;
@@ -399,34 +268,159 @@
       transform: translateY(2px) scale(0.97);
     }
 
-    .controls-row {
+    .bottom-toolbar {
+      margin-top: 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      margin-top: 10px;
+      gap: 8px;
       flex-wrap: wrap;
+      position: relative;
+      z-index: 4; /* above backdrop */
     }
 
-    .controls-row-left {
+    .bottom-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      padding: 2px 8px;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.9);
+    }
+
+    .card-switch-btn {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      padding: 6px 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 32px;
+    }
+
+    .card-switch-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      padding: 0 4px;
+      white-space: nowrap;
+    }
+
+    .card-switch-label strong {
+      color: #e5f3ff;
+    }
+
+    .menu-toggle-btn {
+      border-radius: 999px;
+      border: none;
+      padding: 8px 10px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.96);
+      color: var(--text);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.9);
+      min-height: 40px;
+    }
+
+    @media (max-width: 640px) {
+      .menu-toggle-btn {
+        min-height: 44px;
+      }
+    }
+
+    .player-menu-backdrop {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 60px; /* leave space for toolbar */
+      background: linear-gradient(to top, rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.55));
+      backdrop-filter: blur(4px);
+      z-index: 2;
+    }
+
+    .player-menu {
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      bottom: 60px;
+      padding: 10px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.98);
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.95);
+      z-index: 3;
+    }
+
+    .player-menu-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    .player-menu-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .pattern-row {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
       flex-wrap: wrap;
     }
 
+    .pattern-select {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--text);
+      padding: 9px 14px;
+      font-size: 0.9rem;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.9);
+      width: 100%;
+      text-align: center;
+    }
+
+    .pattern-select option {
+      text-align: left;
+    }
+
+    .controls-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .controls-row-left,
     .controls-row-right {
       display: flex;
       align-items: center;
       gap: 8px;
       flex-wrap: wrap;
+      width: 100%;
     }
 
     .btn {
       border-radius: 999px;
       border: none;
-      padding: 7px 13px;
-      font-size: 0.86rem;
+      padding: 8px 14px;
+      font-size: 0.9rem;
       font-weight: 500;
       cursor: pointer;
       display: inline-flex;
@@ -438,6 +432,9 @@
       border: 1px solid rgba(148, 163, 184, 0.7);
       box-shadow: 0 8px 20px rgba(15, 23, 42, 0.9);
       transition: all 0.16s ease-out;
+      min-height: 40px;
+      width: 100%;
+      justify-content: center;
     }
 
     .btn.primary {
@@ -447,6 +444,7 @@
       box-shadow:
         0 0 0 1px rgba(15, 23, 42, 0.5),
         0 16px 32px rgba(37, 99, 235, 0.65);
+      width: auto;
     }
 
     .btn.subtle {
@@ -480,8 +478,19 @@
         0 0 0 1px rgba(148, 163, 184, 0.7);
     }
 
+    @media (max-width: 640px) {
+      .btn,
+      .pattern-select {
+        font-size: 0.95rem;
+        padding: 10px 14px;
+      }
+      .btn {
+        min-height: 44px;
+      }
+    }
+
     .bingo-banner {
-      margin-top: 10px;
+      margin-top: 8px;
       padding: 8px 10px;
       border-radius: 12px;
       background: linear-gradient(135deg, rgba(250, 204, 21, 0.12), rgba(22, 163, 74, 0.12));
@@ -712,11 +721,12 @@
       width: 100%;
       background: rgba(15, 23, 42, 0.94);
       border-radius: 24px;
-      padding: 20px 18px 18px;
+      padding: 22px 18px 18px;
       box-shadow: 0 20px 50px rgba(15, 23, 42, 0.9);
       border: 1px solid rgba(248, 250, 252, 0.8);
       position: relative;
       overflow: hidden;
+      text-align: center;
     }
 
     .splash-inner::before,
@@ -747,6 +757,7 @@
     .splash-badge {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
       padding: 4px 10px;
       border-radius: 999px;
@@ -768,7 +779,6 @@
       z-index: 1;
       font-size: 1.6rem;
       margin: 0 0 4px;
-      text-align: left;
       color: #f9fafb;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -808,6 +818,7 @@
       margin: 0 0 12px;
       font-size: 0.9rem;
       color: #e5e7eb;
+      text-align: left;
     }
 
     .splash-list li {
@@ -826,7 +837,7 @@
       z-index: 1;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       gap: 8px;
       flex-wrap: wrap;
       margin-top: 6px;
@@ -854,15 +865,15 @@
       </div>
       <h1 class="splash-title">Let&rsquo;s play Baby Bingo</h1>
       <p class="splash-subtitle">
-        For players, keep the cards page open while you play.
+        for players, keep this page open while you watch and listen on Zoom.
       </p>
       <div class="splash-divider"></div>
       <div class="splash-list-title">How this card works</div>
       <ul class="splash-list">
         <li><span class="bullet">👂</span><span>When the host calls a number, tap that number on your card to mark it.</span></li>
-        <li><span class="bullet">🧩</span><span>Match the winning pattern that the host announces (e.g. Line, X, Corners, Full card).</span></li>
-        <li><span class="bullet">📱</span><span>If you create more than one cards, use the arrows to move between cards.</span></li>
-        <li><span class="bullet">⭐</span><span>The center square is FREE and is already marked for you.</span></li>
+        <li><span class="bullet">🧩</span><span>The pattern dropdown lets you choose how to win: a straight line (row or column), an X with both diagonals, four corners, or a full card (blackout). The host will say which one to use.</span></li>
+        <li><span class="bullet">📱</span><span>Use the arrows at the bottom to move between cards. You can add up to four cards on one device.</span></li>
+        <li><span class="bullet">⭐</span><span>The center square is FREE and starts marked for you.</span></li>
         <li><span class="bullet">🎉</span><span>When you get a full winning pattern, shout &ldquo;BINGO!&rdquo; on Zoom and tell the host.</span></li>
       </ul>
       <div class="splash-footer">
@@ -876,10 +887,6 @@
 
   <div class="app">
     <header>
-      <div class="pill">
-        <span class="pill-dot"></span>
-        <span>Choose player or host view</span>
-      </div>
       <h1>Baby Shower Bingo</h1>
       <div class="mode-switch" aria-label="Choose player or host view">
         <button class="mode-btn active" data-mode="player" id="playerModeBtn">
@@ -897,72 +904,81 @@
       <section class="card-shell" id="playerPanel">
         <div class="card-shell-inner">
           <div class="section-header">
-            <div>
-              <h2>My Bingo Cards</h2>
-            </div>
-            <span class="badge">
-              <span>Up to 4 cards</span> • <span>Pattern wins</span>
-            </span>
-          </div>
-
-          <div class="pattern-row">
-            <div class="pattern-label">
-              <span class="dot"></span>
-              <span>Select a pattern from the drop down</span>
-            </div>
-            <select id="patternSelect" class="pattern-select">
-              <option value="line">Line – any row, column, or diagonal</option>
-              <option value="x">X pattern – both diagonals</option>
-              <option value="corners">Four corners only</option>
-              <option value="full">Full card (blackout)</option>
-            </select>
-          </div>
-
-          <div class="card-switcher">
-            <div class="card-switch-main">
-              <button class="card-switch-btn" id="prevCardBtn" type="button" aria-label="Show previous card">◀</button>
-              <div class="card-switch-label">
-                <span id="cardLabel"><strong>Card 1</strong> of 1</span>
-              </div>
-              <button class="card-switch-btn" id="nextCardBtn" type="button" aria-label="Show next card">▶</button>
-            </div>
-            <button class="card-add-btn" id="addCardBtn" type="button">
-              <span class="icon">➕</span>
-              <span>Add another card</span>
-            </button>
+            <h2>My Bingo Cards</h2>
           </div>
 
           <div class="bingo-grid" id="bingoGrid">
             <!-- Header + cells rendered via JS -->
           </div>
 
-          <div class="controls-row">
-            <div class="controls-row-left">
-              <button class="btn subtle" id="clearMarksBtn" type="button">
-                ✖️ Clear your taps on this card
-              </button>
-            </div>
-            <div class="controls-row-right">
-              <button class="btn" id="newCardBtn" type="button">
-                🔁 New numbers on this card
-              </button>
-            </div>
-          </div>
-
-          <div class="controls-row" style="margin-top: 6px;">
-            <div class="controls-row-left">
-              <button class="btn danger" id="resetAllBtn" type="button">
-                🧹 Restart the game!
-              </button>
-            </div>
-          </div>
-
           <div class="bingo-banner" id="bingoBanner">
             <div>
               <div class="label">Bingo detected</div>
-              <div class="msg" id="bingoBannerMsg">You have a winning pattern on this card. Tell the host your card number.</div>
+              <div class="msg" id="bingoBannerMsg">You have a winning pattern on this card. Tell the host.</div>
             </div>
             <span>🎉</span>
+          </div>
+
+          <div class="bottom-toolbar">
+            <div class="bottom-nav">
+              <button class="card-switch-btn" id="prevCardBtn" type="button" aria-label="Show previous card">◀</button>
+              <div class="card-switch-label">
+                <span id="cardLabel"><strong>Card 1</strong> of 1</span>
+              </div>
+              <button class="card-switch-btn" id="nextCardBtn" type="button" aria-label="Show next card">▶</button>
+            </div>
+            <button class="menu-toggle-btn" id="playerMenuToggleBtn" type="button" aria-label="Show card options">
+              ⋯
+            </button>
+          </div>
+
+          <div class="player-menu-backdrop hidden" id="playerMenuBackdrop"></div>
+
+          <div class="player-menu hidden" id="playerMenu">
+            <div class="player-menu-title">Card options</div>
+            <div class="player-menu-sub">
+              Please select a pattern first before createing a new card. Any changes you make will affect all your cards.
+            </div>
+            <div class="pattern-row">
+              <select id="patternSelect" class="pattern-select">
+                <option value="line">Line (row/column/diagonal)</option>
+                <option value="x">X (both diagonals)</option>
+                <option value="corners">Four corners</option>
+                <option value="full">Full card (blackout)</option>
+              </select>
+            </div>
+
+            <div class="controls-row">
+              <div class="controls-row-left">
+                <button class="btn" id="addCardBtn" type="button">
+                  ➕ Add another card
+                </button>
+              </div>
+            </div>
+
+            <div class="controls-row">
+              <div class="controls-row-left">
+                <button class="btn subtle" id="clearMarksBtn" type="button">
+                  ✖️ Clear opened card
+                </button>
+              </div>
+            </div>
+
+            <div class="controls-row">
+              <div class="controls-row-left">
+                <button class="btn" id="newCardBtn" type="button">
+                  🔁 Refresh opened card
+                </button>
+              </div>
+            </div>
+
+            <div class="controls-row">
+              <div class="controls-row-left">
+                <button class="btn danger" id="resetAllBtn" type="button">
+                  🧹 Reset all cards
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -1011,7 +1027,7 @@
     </main>
 
     <footer>
-      Thank you for playing!!.
+      Thank you for playing!
     </footer>
   </div>
 
@@ -1023,6 +1039,7 @@
       const newCardBtn = document.getElementById("newCardBtn");
       const clearMarksBtn = document.getElementById("clearMarksBtn");
       const resetAllBtn = document.getElementById("resetAllBtn");
+      const addCardBtn = document.getElementById("addCardBtn");
       const bingoBanner = document.getElementById("bingoBanner");
       const bingoBannerMsg = document.getElementById("bingoBannerMsg");
       const confettiOverlay = document.getElementById("confettiOverlay");
@@ -1042,12 +1059,15 @@
 
       const prevCardBtn = document.getElementById("prevCardBtn");
       const nextCardNavBtn = document.getElementById("nextCardBtn");
-      const addCardBtn = document.getElementById("addCardBtn");
       const cardLabel = document.getElementById("cardLabel");
       const patternSelect = document.getElementById("patternSelect");
 
       const splashScreen = document.getElementById("splashScreen");
       const startGameBtn = document.getElementById("startGameBtn");
+
+      const playerMenu = document.getElementById("playerMenu");
+      const playerMenuBackdrop = document.getElementById("playerMenuBackdrop");
+      const playerMenuToggleBtn = document.getElementById("playerMenuToggleBtn");
 
       let cards = [];
       let activeCardIndex = 0;
@@ -1373,6 +1393,18 @@
         resetAllCards();
       });
 
+      addCardBtn.addEventListener("click", () => {
+        if (cards.length >= MAX_CARDS) {
+          alert("You can play up to " + MAX_CARDS + " cards on this device.");
+          return;
+        }
+        cards.push(createCardData());
+        activeCardIndex = cards.length - 1;
+        bingoBanner.classList.remove("visible");
+        hideToast();
+        renderActiveCard();
+      });
+
       function setMode(mode) {
         const isPlayer = mode === "player";
         playerModeBtn.classList.toggle("active", isPlayer);
@@ -1475,18 +1507,6 @@
         renderActiveCard();
       });
 
-      addCardBtn.addEventListener("click", () => {
-        if (cards.length >= MAX_CARDS) {
-          alert("You can play up to " + MAX_CARDS + " cards on this device.");
-          return;
-        }
-        cards.push(createCardData());
-        activeCardIndex = cards.length - 1;
-        bingoBanner.classList.remove("visible");
-        hideToast();
-        renderActiveCard();
-      });
-
       patternSelect.addEventListener("change", () => {
         currentPattern = patternSelect.value;
         bingoBanner.classList.remove("visible");
@@ -1506,9 +1526,40 @@
         renderActiveCard();
       }
 
+      function openPlayerMenu() {
+        if (!playerMenu || !playerMenuBackdrop || !playerMenuToggleBtn) return;
+        playerMenu.classList.remove("hidden");
+        playerMenuBackdrop.classList.remove("hidden");
+        playerMenuToggleBtn.textContent = "✕";
+      }
+
+      function closePlayerMenu() {
+        if (!playerMenu || !playerMenuBackdrop || !playerMenuToggleBtn) return;
+        playerMenu.classList.add("hidden");
+        playerMenuBackdrop.classList.add("hidden");
+        playerMenuToggleBtn.textContent = "⋯";
+      }
+
       if (startGameBtn && splashScreen) {
         startGameBtn.addEventListener("click", () => {
           splashScreen.classList.add("hidden");
+        });
+      }
+
+      if (playerMenuToggleBtn) {
+        playerMenuToggleBtn.addEventListener("click", () => {
+          const isHidden = playerMenu.classList.contains("hidden");
+          if (isHidden) {
+            openPlayerMenu();
+          } else {
+            closePlayerMenu();
+          }
+        });
+      }
+
+      if (playerMenuBackdrop) {
+        playerMenuBackdrop.addEventListener("click", () => {
+          closePlayerMenu();
         });
       }
 
