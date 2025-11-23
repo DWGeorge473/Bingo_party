@@ -993,20 +993,20 @@
     <div class="splash-inner">
       <div class="splash-badge">
         <span class="emoji">🍼</span>
-        <span>Baby Shower Bingo • Live on Zoom</span>
+        <span>Baby Shower Bingo</span>
       </div>
       <h1 class="splash-title">Let&rsquo;s play Baby Bingo</h1>
       <p class="splash-subtitle">
-        Keep this page open during the party. Use it on your phone while you watch and listen on Zoom.
+        For palayers, keep the card page open during the game.
       </p>
       <div class="splash-divider"></div>
       <div class="splash-list-title">How this card works</div>
       <ul class="splash-list">
         <li><span class="bullet">👂</span><span>When the host calls a number, tap that number on your card to mark it.</span></li>
-        <li><span class="bullet">🧩</span><span>The pattern dropdown lets you choose how to win: a straight line (row or column), an X with both diagonals, four corners, or a full card (blackout). The host will say which one to use.</span></li>
+        <li><span class="bullet">🧩</span><span>The pattern dropdown lets you choose the game pattern: a straight line (row or column), an X with both diagonals, four corners, or a full card (blackout). The host will say which one to use.</span></li>
         <li><span class="bullet">📱</span><span>Use the arrows at the bottom to move between cards. You can add up to four cards on one device.</span></li>
-        <li><span class="bullet">⭐</span><span>The center square is FREE and starts marked for you.</span></li>
-        <li><span class="bullet">🎉</span><span>When you get a full winning pattern, shout &ldquo;BINGO!&rdquo; on Zoom and tell the host your card number.</span></li>
+        <li><span class="bullet">⭐</span><span>The center square is FREE and is marked for you.</span></li>
+        <li><span class="bullet">🎉</span><span>When you get a full winning pattern, shout &ldquo;BINGO!&rdquo; on Zoom and tell the host.</span></li>
       </ul>
       <div class="splash-footer">
         <div class="splash-note">Tap Start when you&rsquo;re ready to see your bingo card.</div>
@@ -1046,7 +1046,7 @@
           <div class="bingo-banner" id="bingoBanner">
             <div>
               <div class="label">Bingo detected</div>
-              <div class="msg" id="bingoBannerMsg">You have a winning pattern on this card. Tell the host your card number.</div>
+              <div class="msg" id="bingoBannerMsg">You have a winning pattern on this card. Tell the host.</div>
             </div>
             <span>🎉</span>
           </div>
@@ -1069,14 +1069,14 @@
           <div class="player-menu hidden" id="playerMenu">
             <div class="player-menu-title">Card options</div>
             <div class="player-menu-sub">
-              This winning pattern applies to all your cards. You can change it at any time without recreating them.
+              Please select a pattern first before createing a new card.</strong> Any changes you make will affect all your cards. Please also note, refreshing a card will set new numbers so do not refresh if card is already being used.
             </div>
             <div class="pattern-row">
               <select id="patternSelect" class="pattern-select">
-                <option value="line">Winning pattern: line (row/column/diagonal)</option>
-                <option value="x">Winning pattern: X (both diagonals)</option>
-                <option value="corners">Winning pattern: four corners</option>
-                <option value="full">Winning pattern: full card (blackout)</option>
+                <option value="line">Pattern: line (row/column/diagonal)</option>
+                <option value="x">Pattern: X (both diagonals)</option>
+                <option value="corners">Pattern: four corners</option>
+                <option value="full">Pattern: full card (blackout)</option>
               </select>
             </div>
 
@@ -1091,7 +1091,7 @@
             <div class="controls-row">
               <div class="controls-row-left">
                 <button class="btn subtle" id="clearMarksBtn" type="button">
-                  ✖️ Clear marks on this card
+                  ✖️ Clear current card
                 </button>
               </div>
             </div>
@@ -1099,7 +1099,7 @@
             <div class="controls-row">
               <div class="controls-row-left">
                 <button class="btn" id="newCardBtn" type="button">
-                  🔁 New numbers on this card
+                  🔁 Refresh current card
                 </button>
               </div>
             </div>
@@ -1107,7 +1107,7 @@
             <div class="controls-row">
               <div class="controls-row-left">
                 <button class="btn danger" id="resetAllBtn" type="button">
-                  🧹 Reset all cards on this device
+                  🧹 Reset all cards
                 </button>
               </div>
             </div>
@@ -1159,7 +1159,9 @@
     </main>
 
     <footer>
-      Phones and tablets should stay on <strong>Player Cards</strong>. One device on Zoom can use <strong>Host Caller</strong> to run the game for everyone.
+      <br>
+      <br>
+      <strong>Thank you for playing!</strong> 😃
     </footer>
   </div>
 
@@ -1449,7 +1451,7 @@
           card.bingoShown = true;
           const humanIndex = activeCardIndex + 1;
           bingoBannerMsg.textContent =
-            "You have " + patternName(currentPattern) + " on Card " + humanIndex + ". Tell the host your card number.";
+            "You have " + patternName(currentPattern) + " on Card " + humanIndex + ". Tell the host.";
           bingoBanner.classList.add("visible");
           bingoToastText.textContent = "Bingo on Card " + humanIndex + "! Announce it on Zoom 🎙️";
           triggerConfetti();
