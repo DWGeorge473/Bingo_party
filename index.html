@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Virtual Bingo Party</title>
+  <title>Baby Shower Bingo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
@@ -480,23 +480,6 @@
         0 0 0 1px rgba(148, 163, 184, 0.7);
     }
 
-    .hint {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-top: 8px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .hint-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: rgba(56, 189, 248, 0.4);
-      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.9);
-    }
-
     .bingo-banner {
       margin-top: 10px;
       padding: 8px 10px;
@@ -711,6 +694,149 @@
       font-size: 0.78rem;
     }
 
+    /* Splash screen */
+
+    .splash {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at top, #f9e0ff 0, #e0f2fe 35%, #0f172a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 60;
+    }
+
+    .splash-inner {
+      max-width: 480px;
+      width: 100%;
+      background: rgba(15, 23, 42, 0.94);
+      border-radius: 24px;
+      padding: 20px 18px 18px;
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(248, 250, 252, 0.8);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .splash-inner::before,
+    .splash-inner::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      opacity: 0.24;
+      pointer-events: none;
+    }
+
+    .splash-inner::before {
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle at center, #f9a8d4, transparent 70%);
+      top: -60px;
+      right: -40px;
+    }
+
+    .splash-inner::after {
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle at center, #bfdbfe, transparent 70%);
+      bottom: -80px;
+      left: -60px;
+    }
+
+    .splash-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(248, 250, 252, 0.7);
+      font-size: 0.8rem;
+      color: #e5e7eb;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 10px;
+    }
+
+    .splash-badge span.emoji {
+      font-size: 1.1rem;
+    }
+
+    .splash-title {
+      position: relative;
+      z-index: 1;
+      font-size: 1.6rem;
+      margin: 0 0 4px;
+      text-align: left;
+      color: #f9fafb;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .splash-subtitle {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 12px;
+      color: #e2e8f0;
+      font-size: 0.95rem;
+    }
+
+    .splash-divider {
+      position: relative;
+      z-index: 1;
+      height: 1px;
+      margin: 8px 0 10px;
+      background: linear-gradient(to right, transparent, rgba(148, 163, 184, 0.8), transparent);
+    }
+
+    .splash-list-title {
+      position: relative;
+      z-index: 1;
+      font-size: 0.86rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #cbd5f5;
+      margin-bottom: 6px;
+    }
+
+    .splash-list {
+      position: relative;
+      z-index: 1;
+      list-style: none;
+      padding: 0;
+      margin: 0 0 12px;
+      font-size: 0.9rem;
+      color: #e5e7eb;
+    }
+
+    .splash-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .splash-list li span.bullet {
+      font-size: 0.95rem;
+    }
+
+    .splash-footer {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .splash-note {
+      font-size: 0.8rem;
+      color: #cbd5f5;
+    }
+
   </style>
 </head>
 <body>
@@ -720,14 +846,41 @@
     <span class="text" id="bingoToastText">Bingo! Announce it on Zoom 🎙️</span>
   </div>
 
+  <div class="splash" id="splashScreen">
+    <div class="splash-inner">
+      <div class="splash-badge">
+        <span class="emoji">🍼</span>
+        <span>Baby Shower Bingo</span>
+      </div>
+      <h1 class="splash-title">Let&rsquo;s play Baby Bingo</h1>
+      <p class="splash-subtitle">
+        For players, keep the cards page open while you play.
+      </p>
+      <div class="splash-divider"></div>
+      <div class="splash-list-title">How this card works</div>
+      <ul class="splash-list">
+        <li><span class="bullet">👂</span><span>When the host calls a number, tap that number on your card to mark it.</span></li>
+        <li><span class="bullet">🧩</span><span>Match the winning pattern that the host announces (e.g. Line, X, Corners, Full card).</span></li>
+        <li><span class="bullet">📱</span><span>If you create more than one cards, use the arrows to move between cards.</span></li>
+        <li><span class="bullet">⭐</span><span>The center square is FREE and is already marked for you.</span></li>
+        <li><span class="bullet">🎉</span><span>When you get a full winning pattern, shout &ldquo;BINGO!&rdquo; on Zoom and tell the host.</span></li>
+      </ul>
+      <div class="splash-footer">
+        <div class="splash-note">Tap Start when you&rsquo;re ready to see your bingo card.</div>
+        <button class="btn primary" id="startGameBtn" type="button">
+          🎈 Start Baby Bingo
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div class="app">
     <header>
       <div class="pill">
         <span class="pill-dot"></span>
-        <span>Connected on Zoom • Tap squares as the host calls numbers</span>
+        <span>Choose player or host view</span>
       </div>
-      <h1>Virtual Bingo Party</h1>
-      <p>Keep this open on your phone, mark your numbers, and shout “BINGO!” when you match the pattern.</p>
+      <h1>Baby Shower Bingo</h1>
       <div class="mode-switch" aria-label="Choose player or host view">
         <button class="mode-btn active" data-mode="player" id="playerModeBtn">
           <span class="emoji">📱</span>
@@ -746,7 +899,6 @@
           <div class="section-header">
             <div>
               <h2>My Bingo Cards</h2>
-              <p class="section-subtitle">Tap a square when you hear that number. Use the arrows to switch cards.</p>
             </div>
             <span class="badge">
               <span>Up to 4 cards</span> • <span>Pattern wins</span>
@@ -756,7 +908,7 @@
           <div class="pattern-row">
             <div class="pattern-label">
               <span class="dot"></span>
-              <span>Winning pattern (match what your host announces)</span>
+              <span>Select a pattern from the drop down</span>
             </div>
             <select id="patternSelect" class="pattern-select">
               <option value="line">Line – any row, column, or diagonal</option>
@@ -787,7 +939,7 @@
           <div class="controls-row">
             <div class="controls-row-left">
               <button class="btn subtle" id="clearMarksBtn" type="button">
-                ✖️ Clear marks on this card
+                ✖️ Clear your taps on this card
               </button>
             </div>
             <div class="controls-row-right">
@@ -800,7 +952,7 @@
           <div class="controls-row" style="margin-top: 6px;">
             <div class="controls-row-left">
               <button class="btn danger" id="resetAllBtn" type="button">
-                🧹 Reset all cards on this device
+                🧹 Restart the game!
               </button>
             </div>
           </div>
@@ -812,11 +964,6 @@
             </div>
             <span>🎉</span>
           </div>
-
-          <div class="hint">
-            <span class="hint-dot"></span>
-            <span>The center square is FREE and starts marked for you.</span>
-          </div>
         </div>
       </section>
 
@@ -825,7 +972,6 @@
           <div class="section-header">
             <div>
               <h2>Host Caller Tools</h2>
-              <p class="section-subtitle">Use this on your laptop to draw numbers and share your screen with players.</p>
             </div>
             <span class="badge">
               <span>75-ball</span> • <span>Classic BINGO</span>
@@ -859,18 +1005,13 @@
                 <!-- Pills added here -->
               </div>
             </div>
-
-            <div class="hint">
-              <span class="hint-dot"></span>
-              <span>Before you start, tell everyone which pattern wins this round (line, X, corners, or full card).</span>
-            </div>
           </div>
         </div>
       </section>
     </main>
 
     <footer>
-      Phones and tablets should stay on <strong>Player Cards</strong>. One device on Zoom can use <strong>Host Caller</strong> to run the game for everyone.
+      Thank you for playing!!.
     </footer>
   </div>
 
@@ -904,6 +1045,9 @@
       const addCardBtn = document.getElementById("addCardBtn");
       const cardLabel = document.getElementById("cardLabel");
       const patternSelect = document.getElementById("patternSelect");
+
+      const splashScreen = document.getElementById("splashScreen");
+      const startGameBtn = document.getElementById("startGameBtn");
 
       let cards = [];
       let activeCardIndex = 0;
@@ -1360,6 +1504,12 @@
         bingoBanner.classList.remove("visible");
         hideToast();
         renderActiveCard();
+      }
+
+      if (startGameBtn && splashScreen) {
+        startGameBtn.addEventListener("click", () => {
+          splashScreen.classList.add("hidden");
+        });
       }
 
       initPlayerSide();
