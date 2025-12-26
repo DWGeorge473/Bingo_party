@@ -41,7 +41,7 @@
       gap:12px;
     }
 
-    /* Decorative top trim like the sample image */
+    /* Decorative top trim */
     .trim{
       height: 22px;
       border-radius: 14px;
@@ -205,7 +205,6 @@
       white-space: nowrap;
     }
 
-    /* Bingo grid styled like the printable */
     .bingo-grid{
       display:grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -221,9 +220,9 @@
       border-bottom: 2px solid var(--grid);
       background: #ffffff;
 
-      /* responsive square-ish cells */
-      min-height: clamp(54px, 11.8vw, 74px);
-      padding: clamp(6px, 1.2vw, 10px);
+      /* RESPONSIVE sizing */
+      min-height: clamp(52px, 12vw, 78px);
+      padding: clamp(6px, 1.3vw, 10px);
 
       display:flex;
       align-items:center;
@@ -242,23 +241,20 @@
       font-weight: 900;
       line-height: 1.08;
 
-      /* responsive text sizing (mobile-first) */
-      font-size: clamp(0.62rem, 2.4vw, 0.98rem);
+      /* RESPONSIVE text sizing */
+      font-size: clamp(0.60rem, 2.35vw, 1.02rem);
 
-      /* better wrapping for long words */
       word-break: break-word;
       overflow-wrap: anywhere;
       hyphens: auto;
     }
 
-    /* pastel word colors like sample */
-    .c1{ color:#f39c6b; } /* orange */
-    .c2{ color:#77b7d8; } /* blue */
-    .c3{ color:#a78bd0; } /* purple */
-    .c4{ color:#a8c56e; } /* green */
-    .c5{ color:#f09ab6; } /* pink */
+    .c1{ color:#f39c6b; }
+    .c2{ color:#77b7d8; }
+    .c3{ color:#a78bd0; }
+    .c4{ color:#a8c56e; }
+    .c5{ color:#f09ab6; }
 
-    /* marked state: soft mint highlight + check */
     .bingo-cell.marked{
       background: rgba(223,241,234,0.95);
     }
@@ -272,7 +268,6 @@
       font-size: 1.05rem;
     }
 
-    /* center free */
     .bingo-cell.free{
       background: radial-gradient(circle at 40% 35%, rgba(255,255,255,0.95), rgba(223,241,234,0.85));
       cursor: default;
@@ -285,7 +280,6 @@
       justify-content:center;
       gap: 8px;
     }
-
     .freeDG{
       display:flex;
       align-items:center;
@@ -297,13 +291,11 @@
       text-transform: uppercase;
       line-height: 1;
     }
-
     .pawAmp{
       width: clamp(18px, 4vw, 26px);
       height: clamp(18px, 4vw, 26px);
       display:inline-block;
     }
-
     .freeSmall{
       font-size: clamp(0.56rem, 1.9vw, 0.72rem);
       font-weight: 900;
@@ -349,6 +341,7 @@
       cursor:pointer;
       font-weight:900;
       color: rgba(43,43,43,0.8);
+      opacity:.55;
     }
 
     .card-switch-label{
@@ -370,9 +363,9 @@
       font-size: 1.35rem;
       color: rgba(43,43,43,0.9);
 
-      /* IMPORTANT: keep above blur/backdrop */
+      /* keep above blur/backdrop */
       position: relative;
-      z-index: 30;
+      z-index: 40;
     }
 
     .player-menu-backdrop{
@@ -392,7 +385,7 @@
       border: 3px solid var(--mint);
       border-radius: 16px;
       padding: 12px;
-      z-index: 25;
+      z-index: 30;
       box-shadow: var(--shadow);
       display:flex;
       flex-direction:column;
@@ -417,7 +410,7 @@
 
     .menu-close{
       border:none;
-      background: rgba(223,241,234,0.9);
+      background: rgba(223,241,234,0.92);
       border: 2px solid var(--mint);
       width: 38px;
       height: 38px;
@@ -427,6 +420,10 @@
       font-weight: 1000;
       color: rgba(43,43,43,0.85);
       flex: 0 0 auto;
+
+      /* ensure it is ALWAYS crisp and above */
+      position: relative;
+      z-index: 45;
     }
 
     .btn{
@@ -449,7 +446,6 @@
 
     .hidden{ display:none !important; }
 
-    /* Bingo banner */
     .bingo-banner{
       margin-top: 10px;
       border-radius: 14px;
@@ -475,7 +471,6 @@
       margin-top: 2px;
     }
 
-    /* Host panel */
     .host-main{
       text-align:center;
       padding: 14px 12px;
@@ -576,7 +571,6 @@
       color: rgba(43,43,43,0.82);
     }
 
-    /* Confetti + toast */
     .confetti-overlay{
       position:fixed;
       inset:0;
@@ -630,7 +624,6 @@
       white-space:nowrap;
     }
 
-    /* Splash */
     .splash{
       position:fixed;
       inset:0;
@@ -669,7 +662,6 @@
     }
     .splash-list li{ margin: 6px 0; }
 
-    /* Mobile ergonomic: keep content closer to bottom */
     @media (max-width: 640px){
       body{ align-items:flex-end; }
     }
@@ -699,7 +691,7 @@
       <ul class="splash-list">
         <li>When the host calls an item (word), tap it on your card to mark it.</li>
         <li>The host will tell everyone which pattern counts (Line / X / Corners / Blackout).</li>
-        <li>You can use the ⋯ menu to generate a fresh card (don’t do it mid-game).</li>
+        <li>Use the ⋯ menu to generate a fresh card (don’t do it mid-game).</li>
         <li>The center is a FREE space.</li>
       </ul>
       <button class="btn primary" id="startGameBtn" type="button">🎈 Start</button>
@@ -744,9 +736,9 @@
 
         <div class="bottom-toolbar">
           <div class="bottom-nav">
-            <button class="card-switch-btn" id="prevCardBtn" type="button" aria-label="Previous card">◀</button>
+            <button class="card-switch-btn" id="prevCardBtn" type="button" aria-label="Previous card" title="Single card mode">◀</button>
             <div class="card-switch-label"><span id="cardLabel"><strong>Card 1</strong> of 1</span></div>
-            <button class="card-switch-btn" id="nextCardBtn" type="button" aria-label="Next card">▶</button>
+            <button class="card-switch-btn" id="nextCardBtn" type="button" aria-label="Next card" title="Single card mode">▶</button>
           </div>
 
           <button class="menu-toggle-btn" id="playerMenuToggleBtn" type="button" aria-label="Card options">⋯</button>
@@ -866,6 +858,7 @@
       const hostPatternButtons = Array.from(document.querySelectorAll(".host-pbtn"));
 
       let card = null;
+      let lastCardSignature = "";
 
       let callerPool = [];
       let callerHistory = [];
@@ -885,7 +878,6 @@
       }
 
       function createCardData(){
-        // 24 words + center FREE
         const words = pickNUniqueWords(24);
         const grid = Array.from({length:5}, () => Array.from({length:5}, () => ""));
         const marked = Array.from({length:5}, () => Array.from({length:5}, () => false));
@@ -898,15 +890,26 @@
           }
         }
 
-        // center is free
         grid[2][2] = "FREE";
         marked[2][2] = true;
 
         return { grid, marked, bingoShown:false };
       }
 
+      function signatureForCard(c){
+        // Stable signature for "did this actually change?"
+        // (Ignore center)
+        const flat = [];
+        for(let r=0;r<5;r++){
+          for(let c2=0;c2<5;c2++){
+            if(r===2 && c2===2) continue;
+            flat.push(String(c.grid[r][c2]).toLowerCase());
+          }
+        }
+        return flat.join("|");
+      }
+
       function pawSvg(){
-        // paw acts like the "&" icon
         return `
           <svg class="pawAmp" viewBox="0 0 64 64" aria-hidden="true">
             <path fill="rgba(43,43,43,0.78)" d="M20.5 27.5c-3.3 0-6-3.4-6-7.5S17.2 12.5 20.5 12.5s6 3.4 6 7.5-2.7 7.5-6 7.5zm23 0c-3.3 0-6-3.4-6-7.5s2.7-7.5 6-7.5 6 3.4 6 7.5-2.7 7.5-6 7.5zM12.8 36.4c-3 0-5.5-2.9-5.5-6.4s2.4-6.4 5.5-6.4 5.5 2.9 5.5 6.4-2.4 6.4-5.5 6.4zm38.4 0c-3 0-5.5-2.9-5.5-6.4s2.4-6.4 5.5-6.4 5.5 2.9 5.5 6.4-2.4 6.4-5.5 6.4z"/>
@@ -932,17 +935,13 @@
             const btn = document.createElement("button");
             btn.type = "button";
             btn.className = "bingo-cell";
-            btn.dataset.row = String(r);
-            btn.dataset.col = String(c);
-
-            const isFree = (r===2 && c===2);
-            btn.dataset.free = isFree ? "true" : "false";
-            if(isFree) btn.classList.add("free");
+            btn.dataset.free = (r===2 && c===2) ? "true" : "false";
+            if(btn.dataset.free === "true") btn.classList.add("free");
 
             const span = document.createElement("div");
             span.className = "value";
 
-            if(isFree){
+            if(btn.dataset.free === "true"){
               span.innerHTML = `
                 <div class="freeMark">
                   <div class="freeDG">
@@ -963,13 +962,13 @@
             btn.appendChild(span);
 
             if(card.marked[r][c]) btn.classList.add("marked");
-
             btn.addEventListener("click", () => handleCellClick(r,c,btn));
+
             bingoGrid.appendChild(btn);
           }
         }
 
-        updateCardLabel();
+        cardLabel.innerHTML = "<strong>Card 1</strong> of 1";
       }
 
       function handleCellClick(r,c,el){
@@ -986,17 +985,11 @@
         checkForBingoAnyPattern();
       }
 
-      function updateCardLabel(){
-        cardLabel.innerHTML = "<strong>Card 1</strong> of 1";
-      }
-
       function hasLine(marked){
         const size = 5;
-        // rows
         for(let r=0;r<size;r++){
           if(marked[r].every(Boolean)) return true;
         }
-        // cols
         for(let c=0;c<size;c++){
           let ok = true;
           for(let r=0;r<size;r++){
@@ -1004,7 +997,6 @@
           }
           if(ok) return true;
         }
-        // diagonals
         let d1=true, d2=true;
         for(let i=0;i<size;i++){
           if(!marked[i][i]) d1=false;
@@ -1012,7 +1004,6 @@
         }
         return d1 || d2;
       }
-
       function hasX(marked){
         let d1=true, d2=true;
         for(let i=0;i<5;i++){
@@ -1021,11 +1012,9 @@
         }
         return d1 && d2;
       }
-
       function hasCorners(marked){
         return marked[0][0] && marked[0][4] && marked[4][0] && marked[4][4];
       }
-
       function hasFull(marked){
         for(let r=0;r<5;r++){
           for(let c=0;c<5;c++){
@@ -1102,7 +1091,19 @@
       }
 
       function replaceCardWithNew(){
-        card = createCardData();
+        // Ensure "new card" is truly new (not identical)
+        let attempts = 0;
+        let next;
+        let sig;
+        do{
+          next = createCardData();
+          sig = signatureForCard(next);
+          attempts++;
+        }while(sig === lastCardSignature && attempts < 12);
+
+        card = next;
+        lastCardSignature = sig;
+
         bingoBanner.classList.remove("visible");
         bingoToast.classList.remove("visible");
         renderCard();
@@ -1110,11 +1111,8 @@
 
       function resetAll(){
         if(!confirm("Reset everything on this device and start fresh?")) return;
-        card = createCardData();
-        bingoBanner.classList.remove("visible");
-        bingoToast.classList.remove("visible");
+        replaceCardWithNew();
         closePlayerMenu();
-        renderCard();
         initCaller();
       }
 
@@ -1129,14 +1127,12 @@
       function openPlayerMenu(){
         playerMenu.classList.remove("hidden");
         playerMenuBackdrop.classList.remove("hidden");
-        // keep the toggle as ⋯ (menu already has its own X)
       }
       function closePlayerMenu(){
         playerMenu.classList.add("hidden");
         playerMenuBackdrop.classList.add("hidden");
       }
 
-      // Host caller
       function initCaller(){
         callerPool = shuffle(WORD_POOL);
         callerHistory = [];
@@ -1183,21 +1179,30 @@
       resetAllBtn.addEventListener("click", resetAll);
 
       // Menu open/close
-      playerMenuToggleBtn.addEventListener("click", () => {
+      playerMenuToggleBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         const isHidden = playerMenu.classList.contains("hidden");
         isHidden ? openPlayerMenu() : closePlayerMenu();
       });
 
-      menuCloseBtn.addEventListener("click", closePlayerMenu);
+      menuCloseBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closePlayerMenu();
+      });
+
       playerMenuBackdrop.addEventListener("click", closePlayerMenu);
 
-      // Next card in menu: generate + close menu
-      nextCardMenuBtn.addEventListener("click", () => {
+      // IMPORTANT FIX: Next card generates NEW card + closes menu
+      nextCardMenuBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         replaceCardWithNew();
         closePlayerMenu();
       });
 
-      // Card arrows (still present for future multi-card expansion; currently 1 card)
+      // Arrows present but disabled visually; kept for layout consistency
       prevCardBtn.addEventListener("click", () => {});
       nextCardBtn.addEventListener("click", () => {});
 
@@ -1207,15 +1212,13 @@
         if(confirm("Reset the caller and clear all called items?")) initCaller();
       });
 
-      // Host pattern buttons
       hostPatternButtons.forEach(btn => {
         btn.addEventListener("click", () => setHostPattern(btn.dataset.pattern));
       });
 
       // Init
-      card = createCardData();
+      replaceCardWithNew();          // sets card + signature + renders
       setMode("player");
-      renderCard();
       initCaller();
       setHostPattern("line");
     })();
