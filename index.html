@@ -2,1158 +2,611 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Baby Shower Bingo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Baby Shower Bingo</title>
 
   <style>
     :root{
-      --mint:#b7d8cc;
-      --mint-2:#9fcbbd;
-      --mint-3:#dff1ea;
+      --mint:#CFE8DD;
+      --mint2:#BFE0D3;
+      --sage:#A9C37B;
+      --lav:#B79AD6;
+      --aqua:#6CC6D3;
+      --peach:#F4A261;
+      --pink:#E9A7B6;
+      --grid:#9FC9BB;
+      --ink:#2a2a2a;
       --paper:#ffffff;
-      --ink:#2b2b2b;
-
-      --grid:#97c8b8;
-      --shadow: 0 18px 40px rgba(26, 55, 45, 0.12);
-
-      --radius-lg: 18px;
-      --radius-md: 14px;
+      --shadow: 0 10px 30px rgba(0,0,0,.08);
     }
 
-    *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+    *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      color: var(--ink);
-      min-height: 100vh;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 800px at 50% -10%, #ffffff 0%, #f7fbf9 40%, #f1faf6 100%);
+      min-height:100vh;
       display:flex;
+      align-items:center;
       justify-content:center;
-      padding: 18px 14px 26px;
-      background:
-        radial-gradient(circle at top, #f6fbff 0, #eefbf6 35%, #f8fffc 100%);
+      padding:16px;
     }
 
-    .app{
-      width:100%;
-      max-width: 980px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
+    .wrap{
+      width:min(980px, 100%);
+      display:grid;
+      gap:14px;
+      grid-template-columns: 1fr;
     }
 
-    /* Decorative top trim like the sample image */
-    .trim{
-      height: 22px;
-      border-radius: 14px;
-      background:
-        repeating-linear-gradient(
-          135deg,
-          rgba(183,216,204,0.95) 0 10px,
-          rgba(230,248,241,0.95) 10px 20px
-        );
-      border: 2px solid rgba(151,200,184,0.9);
-      position: relative;
+    .card{
+      background:var(--paper);
+      border:10px solid var(--mint2);
+      border-radius:18px;
+      box-shadow:var(--shadow);
       overflow:hidden;
-      box-shadow: 0 10px 18px rgba(26,55,45,0.08);
-    }
-    .trim::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(circle at 12% 40%, rgba(245,148,185,0.55) 0 3px, transparent 4px),
-        radial-gradient(circle at 28% 60%, rgba(126,217,255,0.6) 0 3px, transparent 4px),
-        radial-gradient(circle at 44% 35%, rgba(255,193,118,0.55) 0 3px, transparent 4px),
-        radial-gradient(circle at 60% 55%, rgba(186,145,255,0.55) 0 3px, transparent 4px),
-        radial-gradient(circle at 76% 45%, rgba(169,230,162,0.6) 0 3px, transparent 4px),
-        radial-gradient(circle at 90% 60%, rgba(255,193,118,0.55) 0 3px, transparent 4px);
-      opacity: .9;
-      pointer-events:none;
     }
 
-    header{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-end;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-
-    .titleBlock{
-      background: var(--paper);
-      border: 3px solid var(--mint);
-      border-radius: var(--radius-lg);
-      padding: 14px 16px 12px;
-      box-shadow: var(--shadow);
+    /* top decorative bar */
+    .topbar{
+      padding:14px 16px 10px;
+      background:linear-gradient(180deg, var(--mint) 0%, #eaf7f1 100%);
+      border-bottom:2px solid rgba(159,201,187,.55);
       position:relative;
-      overflow:hidden;
-      min-width: min(560px, 100%);
     }
-
-    .titleBlock::before{
-      content:"";
-      position:absolute;
-      inset:-40px;
+    .zigzag{
+      height:10px;
       background:
-        radial-gradient(circle at 15% 20%, rgba(126,217,255,0.18), transparent 55%),
-        radial-gradient(circle at 90% 30%, rgba(245,148,185,0.16), transparent 55%),
-        radial-gradient(circle at 50% 120%, rgba(169,230,162,0.15), transparent 55%);
-      pointer-events:none;
+        linear-gradient(135deg, transparent 75%, rgba(183,154,214,.65) 0) 0 0/14px 14px,
+        linear-gradient(225deg, transparent 75%, rgba(108,198,211,.65) 0) 0 0/14px 14px;
+      opacity:.9;
+      margin:-14px -16px 10px;
+    }
+    .sprinkles{
+      height:10px;
+      background:
+        radial-gradient(circle, rgba(244,162,97,.8) 2px, transparent 3px) 0 0/18px 10px,
+        radial-gradient(circle, rgba(233,167,182,.8) 2px, transparent 3px) 6px 2px/18px 10px,
+        radial-gradient(circle, rgba(108,198,211,.8) 2px, transparent 3px) 12px 1px/18px 10px;
+      opacity:.9;
+      margin:0 -16px 12px;
     }
 
-    .titleInner{ position:relative; z-index:1; }
-
-    .babyShower{
-      font-family: ui-rounded, "Segoe UI", system-ui, sans-serif;
+    .title{
+      text-align:center;
+      line-height:1;
+      padding:4px 4px 10px;
+    }
+    .title .script{
+      font-family: "Comic Sans MS", "Segoe Script", "Brush Script MT", cursive;
+      font-size: clamp(34px, 6.5vw, 62px);
       font-weight: 600;
-      letter-spacing: .06em;
-      font-size: clamp(1.35rem, 3vw, 2.1rem);
-      color: #a78bd0; /* soft purple */
-      line-height: 1.05;
+      letter-spacing:.5px;
+      color:var(--lav);
+      text-shadow: 0 1px 0 rgba(255,255,255,.5);
+    }
+    .title .script .swash{
+      color:var(--aqua);
+    }
+    .title .block{
+      margin-top:6px;
+      font-weight: 800;
+      letter-spacing: .35em;
+      font-size: clamp(34px, 6.8vw, 64px);
+      color:var(--sage);
     }
 
-    .bingoWord{
-      font-weight: 900;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      font-size: clamp(1.7rem, 3.6vw, 2.7rem);
-      color: #a8c56e; /* lime-ish like the sample */
-      margin-top: 4px;
-    }
-
-    .subtitle{
-      margin-top: 6px;
-      font-size: .92rem;
-      color: rgba(43,43,43,0.72);
-    }
-
-    .mode-switch{
-      display:inline-flex;
-      gap:8px;
-      background: var(--paper);
-      border: 3px solid var(--mint);
-      border-radius: 999px;
-      padding: 6px;
-      box-shadow: var(--shadow);
-      align-items:center;
-    }
-
-    .mode-btn{
-      border:none;
-      background:transparent;
-      cursor:pointer;
-      padding: 10px 14px;
-      border-radius: 999px;
-      font-weight: 700;
-      color: rgba(43,43,43,0.65);
-      display:inline-flex;
-      gap:8px;
-      align-items:center;
-      transition: transform .12s ease, background .12s ease;
-      white-space:nowrap;
-    }
-    .mode-btn:active{ transform: scale(.98); }
-    .mode-btn.active{
-      background: rgba(183,216,204,0.35);
-      color: rgba(43,43,43,0.92);
-    }
-
-    main{
+    .content{
+      padding:14px 14px 16px;
       display:grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-      gap: 14px;
-      align-items:start;
-    }
-    @media (max-width: 860px){
-      main{ grid-template-columns: minmax(0, 1fr); }
+      gap:14px;
+      grid-template-columns: 1fr;
     }
 
-    .card-shell{
-      background: var(--paper);
-      border: 3px solid var(--mint);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow);
-      padding: 12px;
+    .gridWrap{
+      border:3px solid rgba(159,201,187,.85);
+      border-radius:14px;
+      padding:10px;
+      background: linear-gradient(180deg, #ffffff 0%, #fbfffd 100%);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap:0;
+      border-radius:10px;
+      overflow:hidden;
+      border:2px solid rgba(159,201,187,.55);
+      background:#fff;
+    }
+
+    .cell{
       position:relative;
-      overflow:hidden;
-    }
-
-    .section-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-bottom: 8px;
-    }
-    .section-header h2{
-      margin:0;
-      font-size:.95rem;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      color: rgba(43,43,43,0.72);
-    }
-
-    .badge{
-      border: 2px solid var(--mint);
-      background: rgba(223,241,234,0.7);
-      border-radius: 999px;
-      padding: 6px 10px;
-      font-size: .8rem;
-      font-weight: 700;
-      color: rgba(43,43,43,0.75);
-      white-space: nowrap;
-    }
-
-    /* Bingo grid styled like the printable */
-    .bingo-grid{
-      display:grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 0;
-      border: 3px solid var(--grid);
-      border-radius: 12px;
-      overflow:hidden;
-      background: #fafffd;
-    }
-
-    .bingo-cell{
-      border-right: 2px solid var(--grid);
-      border-bottom: 2px solid var(--grid);
-      background: #ffffff;
-      min-height: 66px;
-      padding: 8px 8px;
+      aspect-ratio: 1 / 1;
+      border:1px solid rgba(159,201,187,.55);
       display:flex;
       align-items:center;
       justify-content:center;
+      padding:8px;
       text-align:center;
-
       cursor:pointer;
-      position:relative;
-      transition: transform .12s ease, background .12s ease;
       user-select:none;
+      background:#fff;
+      transition: transform .08s ease, background .18s ease;
+      min-height: 54px;
     }
-    .bingo-cell:nth-child(5n){ border-right:none; }
-    .bingo-cell:nth-last-child(-n + 5){ border-bottom:none; }
+    .cell:active{ transform: scale(.985); }
 
-    .bingo-cell .value{
-      font-weight: 800;
-      font-size: .95rem;
-      line-height: 1.08;
+    .word{
+      font-weight: 750;
+      font-size: clamp(10px, 2.8vw, 15px);
+      line-height: 1.05;
       word-break: break-word;
+      hyphens:auto;
+      padding:2px 4px;
     }
 
-    /* pastel word colors like sample */
-    .c1{ color:#f39c6b; } /* orange */
-    .c2{ color:#77b7d8; } /* blue */
-    .c3{ color:#a78bd0; } /* purple */
-    .c4{ color:#a8c56e; } /* green */
-    .c5{ color:#f09ab6; } /* pink */
-
-    /* marked state: soft mint highlight + check */
-    .bingo-cell.marked{
-      background: rgba(223,241,234,0.95);
+    .cell.marked{
+      background: rgba(191,224,211,.35);
     }
-    .bingo-cell.marked::after{
-      content:"✓";
+    .cell.marked::after{
+      content:"";
       position:absolute;
-      top: 6px;
-      right: 8px;
-      font-weight: 900;
-      color: rgba(67,160,127,0.9);
-      font-size: 1.05rem;
-    }
-
-    /* center free: heart */
-    .bingo-cell.free{
-      background: radial-gradient(circle at 40% 35%, rgba(255,255,255,0.95), rgba(223,241,234,0.85));
-      cursor: default;
-    }
-    .bingo-cell.free .value{
-      font-size: .9rem;
-      letter-spacing:.06em;
-      text-transform: uppercase;
-      font-weight: 900;
-      color: rgba(43,43,43,0.65);
-    }
-
-    .heartBadge{
-      width: 46px;
-      height: 46px;
-      border-radius: 999px;
-      display:grid;
-      place-items:center;
-      border: 2px solid rgba(151,200,184,0.9);
-      background: #fff;
-      box-shadow: 0 10px 18px rgba(26,55,45,0.10);
-      margin-bottom: 6px;
-    }
-
-    .bingo-cell.pulse{ animation: pulse .18s ease-out; }
-    @keyframes pulse{
-      from{ transform: scale(1); }
-      50%{ transform: scale(1.035); }
-      to{ transform: scale(1); }
-    }
-
-    @media (max-width: 440px){
-      .bingo-cell{ min-height: 58px; padding: 7px; }
-      .bingo-cell .value{ font-size: .9rem; }
-    }
-
-    .bottom-toolbar{
-      margin-top: 10px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .bottom-nav{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      border-radius: 999px;
-      border: 3px solid var(--mint);
-      background: var(--paper);
-      padding: 6px 10px;
-      box-shadow: var(--shadow);
-    }
-
-    .card-switch-btn{
-      border:none;
-      background: rgba(223,241,234,0.8);
-      border: 2px solid var(--mint);
-      width: 38px;
-      height: 38px;
-      border-radius: 999px;
-      cursor:pointer;
-      font-weight:900;
-      color: rgba(43,43,43,0.8);
-    }
-
-    .card-switch-label{
-      font-size:.9rem;
-      color: rgba(43,43,43,0.75);
-      white-space:nowrap;
-    }
-    .card-switch-label strong{ color: rgba(43,43,43,0.92); }
-
-    .menu-toggle-btn{
-      border:none;
-      cursor:pointer;
-      width: 46px;
-      height: 46px;
-      border-radius: 999px;
-      border: 3px solid var(--mint);
-      background: var(--paper);
-      box-shadow: var(--shadow);
-      font-size: 1.35rem;
-      color: rgba(43,43,43,0.9);
-    }
-
-    .player-menu-backdrop{
-      position:absolute;
-      inset:0;
-      background: rgba(0,0,0,0.08);
-      backdrop-filter: blur(2px);
-      z-index: 10;
-    }
-
-    .player-menu{
-      position:absolute;
-      left: 12px;
-      right: 12px;
-      bottom: 72px;
-      background: var(--paper);
-      border: 3px solid var(--mint);
-      border-radius: 16px;
-      padding: 10px;
-      z-index: 11;
-      box-shadow: var(--shadow);
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-
-    .player-menu-title{
-      font-size:.85rem;
-      text-transform:uppercase;
-      letter-spacing:.14em;
-      color: rgba(43,43,43,0.65);
-      font-weight: 900;
-    }
-    .player-menu-sub{
-      font-size:.9rem;
-      color: rgba(43,43,43,0.72);
-    }
-
-    .pattern-select{
-      width: 100%;
-      padding: 12px 12px;
-      border-radius: 999px;
-      border: 3px solid var(--mint);
-      background: #fbfffd;
-      font-weight: 800;
-      color: rgba(43,43,43,0.82);
-    }
-
-    .btn{
-      width: 100%;
-      padding: 12px 14px;
-      border-radius: 999px;
-      border: 3px solid var(--mint);
-      background: rgba(223,241,234,0.8);
-      font-weight: 900;
-      cursor:pointer;
-      color: rgba(43,43,43,0.85);
-    }
-    .btn.primary{
-      background: linear-gradient(135deg, rgba(169,230,162,0.75), rgba(126,217,255,0.55));
-    }
-    .btn.danger{
-      background: rgba(245,148,185,0.22);
-      border-color: rgba(245,148,185,0.55);
-    }
-
-    .hidden{ display:none !important; }
-
-    /* Bingo banner */
-    .bingo-banner{
-      margin-top: 10px;
-      border-radius: 14px;
-      border: 3px solid rgba(169,230,162,0.8);
-      background: rgba(223,241,234,0.85);
-      padding: 10px 12px;
-      display:none;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .bingo-banner.visible{ display:flex; }
-    .bingo-banner .label{
-      font-size:.75rem;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      font-weight: 900;
-      color: rgba(43,43,43,0.65);
-    }
-    .bingo-banner .msg{
-      font-weight: 800;
-      color: rgba(43,43,43,0.82);
-      margin-top: 2px;
-    }
-
-    /* Host panel */
-    .host-main{
-      text-align:center;
-      padding: 14px 12px;
-      border-radius: 16px;
-      border: 3px solid var(--mint);
-      background: rgba(223,241,234,0.55);
-    }
-    .host-main-label{
-      font-size:.8rem;
-      text-transform:uppercase;
-      letter-spacing:.14em;
-      font-weight: 900;
-      color: rgba(43,43,43,0.65);
-    }
-    .host-main-call{
-      margin-top: 8px;
-      font-size: clamp(1.35rem, 2.6vw, 1.9rem);
-      font-weight: 1000;
-      color: rgba(43,43,43,0.9);
-      line-height: 1.15;
-      word-break: break-word;
-    }
-
-    .host-history{
-      margin-top: 10px;
-      border-radius: 16px;
-      border: 3px solid var(--mint);
-      background: #fbfffd;
-      padding: 10px;
-      max-height: 220px;
-      overflow:auto;
-    }
-    .host-history-title{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      font-weight: 900;
-      color: rgba(43,43,43,0.7);
-      font-size: .86rem;
-      letter-spacing:.06em;
-    }
-
-    .host-history-list{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top: 10px;
-    }
-
-    .host-pill{
-      border-radius: 999px;
-      border: 2px solid rgba(151,200,184,0.9);
-      background: rgba(223,241,234,0.75);
-      padding: 7px 10px;
-      font-weight: 900;
-      font-size: .86rem;
-      color: rgba(43,43,43,0.82);
-    }
-
-    /* Confetti + toast (kept from your original idea) */
-    .confetti-overlay{
-      position:fixed;
-      inset:0;
+      inset:10%;
+      border-radius:999px;
+      border:3px solid rgba(108,198,211,.55);
+      background: rgba(183,154,214,.08);
+      box-shadow: 0 6px 20px rgba(108,198,211,.15);
       pointer-events:none;
-      overflow:hidden;
-      z-index: 50;
-      display:none;
     }
-    .confetti-overlay.active{ display:block; }
-    .confetti-piece{
+
+    /* pastel word colors (like the sample image) */
+    .c1{ color: var(--peach); }
+    .c2{ color: var(--sage); }
+    .c3{ color: var(--lav); }
+    .c4{ color: var(--pink); }
+    .c5{ color: var(--aqua); }
+
+    /* FREE center */
+    .free{
+      cursor:default;
+      background: linear-gradient(180deg, rgba(191,224,211,.35) 0%, rgba(191,224,211,.18) 100%);
+    }
+    .free::after{
+      content:"";
       position:absolute;
-      width: 8px;
-      height: 14px;
-      border-radius: 2px;
-      opacity:0;
-      animation: confetti-fall 1.35s linear forwards;
-    }
-    @keyframes confetti-fall{
-      0%{ transform: translate3d(0,-40px,0) rotateZ(0deg); opacity:1; }
-      100%{ transform: translate3d(var(--x-move,0), 120vh, 0) rotateZ(340deg); opacity:0; }
-    }
-
-    .bingo-toast{
-      position:fixed;
-      left:50%;
-      top: 12px;
-      transform: translateX(-50%) translateY(-40px);
-      background: rgba(255,255,255,0.9);
-      border: 3px solid rgba(255,193,118,0.7);
-      border-radius: 999px;
-      padding: 10px 14px;
-      box-shadow: var(--shadow);
-      display:flex;
-      gap:10px;
-      align-items:center;
-      opacity:0;
+      inset:16%;
+      border-radius:18px;
+      background: rgba(255,255,255,.7);
+      border:2px solid rgba(159,201,187,.5);
       pointer-events:none;
-      transition: opacity .22s ease, transform .22s ease;
-      z-index: 60;
     }
-    .bingo-toast.visible{
-      opacity:1;
-      transform: translateX(-50%) translateY(0);
-    }
-    .bingo-toast .text{
-      font-weight: 1000;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      font-size: .78rem;
-      color: rgba(43,43,43,0.85);
-      white-space:nowrap;
-    }
-
-    /* Splash */
-    .splash{
-      position:fixed;
-      inset:0;
-      z-index: 70;
+    .freeInner{
+      position:relative;
+      z-index:1;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 18px;
-      background: radial-gradient(circle at top, #f9e0ff 0, #e0f2fe 30%, #eefbf6 70%, #f8fffc 100%);
+      gap:10px;
+      font-weight:900;
+      letter-spacing:.04em;
+      font-size: clamp(20px, 5vw, 34px);
+      color:#4b4b4b;
     }
-    .splash-inner{
-      width: min(520px, 100%);
-      background: var(--paper);
-      border: 3px solid var(--mint);
-      border-radius: 24px;
-      box-shadow: var(--shadow);
-      padding: 18px 16px;
-    }
-    .splash-title{
-      margin: 0 0 6px;
-      font-weight: 1000;
-      letter-spacing:.10em;
-      text-transform: uppercase;
-      color: rgba(43,43,43,0.9);
-    }
-    .splash-sub{
-      margin: 0 0 12px;
-      color: rgba(43,43,43,0.7);
-      font-weight: 700;
-    }
-    .splash-list{
-      margin: 0 0 14px;
-      padding-left: 18px;
-      color: rgba(43,43,43,0.78);
-      font-weight: 700;
-    }
-    .splash-list li{ margin: 6px 0; }
-
-    /* Mobile ergonomic: keep content closer to bottom */
-    @media (max-width: 640px){
-      body{ align-items:flex-end; }
+    .paw{
+      width: clamp(20px, 4.8vw, 34px);
+      height: clamp(20px, 4.8vw, 34px);
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,.08));
     }
 
-    footer{
+    /* controls + host panel */
+    .panel{
+      display:grid;
+      gap:10px;
+      grid-template-columns: 1fr;
+    }
+
+    .buttons{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:center;
+    }
+
+    button{
+      appearance:none;
+      border:0;
+      border-radius:999px;
+      padding:10px 14px;
+      font-weight:750;
+      background: var(--mint);
+      color:#24524a;
+      box-shadow: 0 10px 22px rgba(0,0,0,.06);
+      cursor:pointer;
+      transition: transform .08s ease, filter .2s ease;
+    }
+    button:hover{ filter: brightness(1.02); }
+    button:active{ transform: scale(.985); }
+    .btn2{ background: rgba(108,198,211,.25); color:#1b4c56; }
+    .btn3{ background: rgba(244,162,97,.25); color:#6b3a16; }
+
+    .host{
+      border:2px solid rgba(159,201,187,.6);
+      border-radius:14px;
+      padding:12px;
+      background: #fbfffd;
+    }
+    .hostTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .hostTitle{
+      font-weight:900;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      font-size:12px;
+      color:#2f6a5f;
+    }
+    .currentCall{
+      margin-top:10px;
+      border-radius:12px;
+      border:2px dashed rgba(183,154,214,.55);
+      padding:12px;
       text-align:center;
-      font-weight: 900;
-      color: rgba(43,43,43,0.65);
-      margin-top: 4px;
+      background: rgba(183,154,214,.07);
+    }
+    .currentCall .label{
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:#6a4c87;
+      opacity:.9;
+    }
+    .currentCall .wordNow{
+      margin-top:6px;
+      font-size: clamp(18px, 4.5vw, 28px);
+      font-weight:950;
+      color:#3b3b3b;
+    }
+
+    .calledList{
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .chip{
+      font-size:12px;
+      font-weight:800;
+      padding:6px 10px;
+      border-radius:999px;
+      background: rgba(191,224,211,.35);
+      border:1px solid rgba(159,201,187,.6);
+      color:#24524a;
+    }
+
+    .footerNote{
+      text-align:center;
+      font-size:11px;
+      padding:10px 12px 14px;
+      color: rgba(42,42,42,.55);
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      background:linear-gradient(180deg, #ffffff 0%, #f4fbf7 100%);
+      border-top:2px solid rgba(159,201,187,.35);
+    }
+
+    /* Desktop layout: board + host panel side by side */
+    @media (min-width: 860px){
+      .content{
+        grid-template-columns: 1.2fr .8fr;
+        align-items:start;
+      }
+      .panel{ position: sticky; top: 12px; }
     }
   </style>
 </head>
 
 <body>
-  <div class="confetti-overlay" id="confettiOverlay"></div>
+  <div class="wrap">
+    <div class="card" role="application" aria-label="Baby Shower Bingo Game">
+      <div class="topbar">
+        <div class="zigzag"></div>
+        <div class="sprinkles"></div>
+        <div class="title">
+          <div class="script">Baby <span class="swash">Shower</span></div>
+          <div class="block">BINGO</div>
+        </div>
+      </div>
 
-  <div class="bingo-toast" id="bingoToast">
-    <span>🎉</span>
-    <span class="text" id="bingoToastText">Bingo! Announce it on Zoom</span>
-  </div>
+      <div class="content">
+        <div class="gridWrap">
+          <div id="grid" class="grid" aria-label="Bingo grid"></div>
+        </div>
 
-  <div class="splash" id="splashScreen">
-    <div class="splash-inner">
-      <div class="trim" style="margin-bottom:12px;"></div>
-      <h1 class="splash-title">Baby Shower Bingo</h1>
-      <p class="splash-sub">Players: keep this open while the gifts are opened.</p>
-      <ul class="splash-list">
-        <li>When the host calls an item (word), tap it on your card to mark it.</li>
-        <li>The pattern menu lets you choose: line, X, corners, or blackout.</li>
-        <li>You can add up to 4 cards on one device (use arrows to switch).</li>
-        <li>The center heart is FREE.</li>
-      </ul>
-      <button class="btn primary" id="startGameBtn" type="button">🎈 Start</button>
+        <div class="panel">
+          <div class="buttons">
+            <button id="newCardBtn" title="Generate a new bingo card">New Card</button>
+            <button id="clearMarksBtn" class="btn2" title="Clear checkmarks on this card">Clear Marks</button>
+            <button id="resetGameBtn" class="btn3" title="Reset card + called words">Reset Game</button>
+          </div>
+
+          <div class="host" aria-label="Host tools">
+            <div class="hostTop">
+              <div class="hostTitle">Host Tools (optional)</div>
+              <div class="buttons" style="justify-content:flex-end">
+                <button id="drawBtn" class="btn2">Draw Word</button>
+              </div>
+            </div>
+
+            <div class="currentCall">
+              <div class="label">Current Call</div>
+              <div id="currentWord" class="wordNow">—</div>
+            </div>
+
+            <div class="calledList" id="calledList" aria-label="Called words list"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footerNote">Tap a square to mark it • Works on mobile & desktop</div>
     </div>
   </div>
 
-  <div class="app">
-    <div class="trim"></div>
-
-    <header>
-      <div class="titleBlock">
-        <div class="titleInner">
-          <div class="babyShower">Baby Shower</div>
-          <div class="bingoWord">BINGO</div>
-          <div class="subtitle">Tap words as the host calls them 🎁</div>
-        </div>
-      </div>
-
-      <div class="mode-switch" aria-label="Choose player or host view">
-        <button class="mode-btn active" data-mode="player" id="playerModeBtn">📱 Player</button>
-        <button class="mode-btn" data-mode="host" id="hostModeBtn">🎙️ Host</button>
-      </div>
-    </header>
-
-    <main>
-      <!-- PLAYER -->
-      <section class="card-shell" id="playerPanel">
-        <div class="section-header">
-          <h2>My Bingo Cards</h2>
-          <span class="badge">Words • Gift-opening style</span>
-        </div>
-
-        <div class="bingo-grid" id="bingoGrid"></div>
-
-        <div class="bingo-banner" id="bingoBanner">
-          <div>
-            <div class="label">Bingo detected</div>
-            <div class="msg" id="bingoBannerMsg">You have a winning pattern. Tell the host.</div>
-          </div>
-          <span>🎉</span>
-        </div>
-
-        <div class="bottom-toolbar">
-          <div class="bottom-nav">
-            <button class="card-switch-btn" id="prevCardBtn" type="button" aria-label="Previous card">◀</button>
-            <div class="card-switch-label"><span id="cardLabel"><strong>Card 1</strong> of 1</span></div>
-            <button class="card-switch-btn" id="nextCardBtn" type="button" aria-label="Next card">▶</button>
-          </div>
-
-          <button class="menu-toggle-btn" id="playerMenuToggleBtn" type="button" aria-label="Card options">⋯</button>
-        </div>
-
-        <div class="player-menu-backdrop hidden" id="playerMenuBackdrop"></div>
-
-        <div class="player-menu hidden" id="playerMenu">
-          <div class="player-menu-title">Card options</div>
-          <div class="player-menu-sub">
-            Pick the pattern your host is using. “Refresh” makes a brand new word card (don’t refresh mid-game).
-          </div>
-
-          <select id="patternSelect" class="pattern-select">
-            <option value="line">Pattern: line (row/column/diagonal)</option>
-            <option value="x">Pattern: X (both diagonals)</option>
-            <option value="corners">Pattern: four corners</option>
-            <option value="full">Pattern: full card (blackout)</option>
-          </select>
-
-          <button class="btn" id="addCardBtn" type="button">➕ Add another card</button>
-          <button class="btn" id="clearMarksBtn" type="button">✖️ Clear current card</button>
-          <button class="btn" id="newCardBtn" type="button">🔁 Refresh current card</button>
-          <button class="btn danger" id="resetAllBtn" type="button">🧹 Reset all cards</button>
-        </div>
-      </section>
-
-      <!-- HOST -->
-      <section class="card-shell hidden" id="hostPanel">
-        <div class="section-header">
-          <h2>Host Caller Tools</h2>
-          <span class="badge" id="poolCountBadge">0 items</span>
-        </div>
-
-        <div class="host-main">
-          <div class="host-main-label">Current item to call</div>
-          <div class="host-main-call" id="currentCallDisplay">—</div>
-        </div>
-
-        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
-          <button class="btn primary" id="nextWordBtn" type="button">🎲 Draw next item</button>
-          <button class="btn" id="resetCallerBtn" type="button">🔁 Reset caller</button>
-        </div>
-
-        <div class="host-history">
-          <div class="host-history-title">
-            <span>Items already called</span>
-            <span id="calledCountLabel">0 / 0</span>
-          </div>
-          <div class="host-history-list" id="calledWordsList"></div>
-        </div>
-      </section>
-    </main>
-
-    <footer>Thank you for playing! 🧸</footer>
-  </div>
-
   <script>
-    (function(){
-      const MAX_CARDS = 4;
+    /***********************
+     * WORD POOL (edit freely)
+     ***********************/
+    const WORD_POOL = [
+      "diapers","wipes","pacifier","bottle","bibs","burp cloths","swaddle","onesie","socks","booties",
+      "mittens","baby lotion","baby shampoo","baby wash","rash cream","changing pad","diaper bag","baby blanket","receiving blankets","crib",
+      "bassinet","stroller","car seat","baby carrier","baby sling","teething rings","rattle","teddy bear","plush toy","board book",
+      "baby monitor","sound machine","bottle warmer","breast pump","nursing pad","milk storage bags","high chair","baby bath","washcloths","hooded towel",
+      "baby pajamas","baby hat","baby bow","baby shoes","play mat","activity gym","rocking chair","baby swing","walker","bouncer",
+      "gripe water","thermometer","nail clippers","baby comb","sippy cup","spoons","baby bowl","snack container","hand sanitizer","bib clips",
+      "crib sheets","changing table","storage bins","laundry basket","stork","piggy bank","gift card","diaper pin","baby hangers","night light"
+    ];
 
-      // A big pool so 4 cards can be meaningfully different.
-      // You can edit this list anytime.
-      const WORD_POOL = [
-        "diapers","wipes","onesie","bib","burp cloth","pacifier","bottle","bottle brush","bottle warmer","bottle holder",
-        "formula","breast pump","nursing pad","milk","rattle","teether","teething rings","blanket","receiving blanket","swaddle",
-        "swaddle wrap","mittens","booties","hat","socks","pajamas","romper","baby lotion","baby wash","baby shampoo",
-        "thermometer","baby oil","diaper cream","changing pad","changing table","diaper bag","diaper pail","diaper pin","safety pins","washcloths",
-        "hooded towel","towel set","crib","crib sheet","bassinet","playard","stroller","car seat","baby carrier","baby sling",
-        "rocking chair","baby swing","bouncer","high chair","baby monitor","night light","humidifier","sound machine","teddy bear","plush toy",
-        "stuffed animal","board book","storybook","baby book","baby bath","bath tub","bath seat","bath thermometer","baby nail clippers","grooming kit",
-        "hair brush","baby comb","baby thermometer","baby powder","baby sunscreen","baby wipes warmer","play mat","toy set","stacking cups","soft blocks",
-        "tummy time","baby mobile","stork","piggy bank","gift card","baby spoon","spoons","fork set","sippy cup","cup",
-        "bowl","plates","snack cup","feeding bibs","baby food","puree maker","bibs","toys","walker","baby shoes",
-        "jumper","crib mobile","pacifier clip","burp towels","receiving set","laundry detergent","baby hangers","drawer dividers","baby blanket","blanket set",
-        "lullaby book","baby journal","photo frame","keepsake box","baby socks","swaddle blanket","travel crib","stroller fan","car mirror","sun shade"
-      ];
+    const STORAGE_KEY = "bingo_words_v2_dg_paw";
+    const MARKS_KEY   = "bingo_marks_v2_dg_paw";
+    const CALLED_KEY  = "bingo_called_v2_dg_paw";
+    const REMAIN_KEY  = "bingo_remaining_v2_dg_paw";
+    const CUR_KEY     = "bingo_current_v2_dg_paw";
 
-      const COLORS = ["c1","c2","c3","c4","c5"];
+    const gridEl = document.getElementById("grid");
+    const currentWordEl = document.getElementById("currentWord");
+    const calledListEl = document.getElementById("calledList");
 
-      const bingoGrid = document.getElementById("bingoGrid");
-      const newCardBtn = document.getElementById("newCardBtn");
-      const clearMarksBtn = document.getElementById("clearMarksBtn");
-      const resetAllBtn = document.getElementById("resetAllBtn");
-      const addCardBtn = document.getElementById("addCardBtn");
+    const pawSVG = `
+      <svg class="paw" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-label="paw icon" role="img">
+        <g fill="#6CC6D3">
+          <circle cx="18" cy="22" r="6"/>
+          <circle cx="32" cy="16" r="6"/>
+          <circle cx="46" cy="22" r="6"/>
+          <circle cx="24" cy="34" r="6"/>
+          <path d="M32 28c-10 0-18 8-18 16 0 8 10 14 18 14s18-6 18-14c0-8-8-16-18-16z" fill="#B79AD6"/>
+        </g>
+      </svg>
+    `;
 
-      const bingoBanner = document.getElementById("bingoBanner");
-      const bingoBannerMsg = document.getElementById("bingoBannerMsg");
-
-      const confettiOverlay = document.getElementById("confettiOverlay");
-      const bingoToast = document.getElementById("bingoToast");
-      const bingoToastText = document.getElementById("bingoToastText");
-
-      const playerModeBtn = document.getElementById("playerModeBtn");
-      const hostModeBtn = document.getElementById("hostModeBtn");
-      const playerPanel = document.getElementById("playerPanel");
-      const hostPanel = document.getElementById("hostPanel");
-
-      const nextWordBtn = document.getElementById("nextWordBtn");
-      const resetCallerBtn = document.getElementById("resetCallerBtn");
-      const currentCallDisplay = document.getElementById("currentCallDisplay");
-      const calledWordsList = document.getElementById("calledWordsList");
-      const calledCountLabel = document.getElementById("calledCountLabel");
-      const poolCountBadge = document.getElementById("poolCountBadge");
-
-      const prevCardBtn = document.getElementById("prevCardBtn");
-      const nextCardBtn = document.getElementById("nextCardBtn");
-      const cardLabel = document.getElementById("cardLabel");
-      const patternSelect = document.getElementById("patternSelect");
-
-      const splashScreen = document.getElementById("splashScreen");
-      const startGameBtn = document.getElementById("startGameBtn");
-
-      const playerMenu = document.getElementById("playerMenu");
-      const playerMenuBackdrop = document.getElementById("playerMenuBackdrop");
-      const playerMenuToggleBtn = document.getElementById("playerMenuToggleBtn");
-
-      let cards = [];
-      let activeCardIndex = 0;
-      let currentPattern = "line";
-
-      let callerPool = [];
-      let callerHistory = [];
-
-      function shuffle(array){
-        const copy = array.slice();
-        for(let i = copy.length - 1; i > 0; i--){
-          const j = Math.floor(Math.random() * (i + 1));
-          [copy[i], copy[j]] = [copy[j], copy[i]];
-        }
-        return copy;
+    function shuffle(arr){
+      const a = arr.slice();
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
       }
+      return a;
+    }
 
-      function pickNUniqueWords(n){
-        const pool = shuffle(WORD_POOL);
-        return pool.slice(0, n);
-      }
-
-      function createCardData(){
-        // 24 words + center FREE
-        const words = pickNUniqueWords(24);
-        const grid = Array.from({length:5}, () => Array.from({length:5}, () => ""));
-        const marked = Array.from({length:5}, () => Array.from({length:5}, () => false));
-        let idx = 0;
-
-        for(let r=0; r<5; r++){
-          for(let c=0; c<5; c++){
-            if(r===2 && c===2) continue;
-            grid[r][c] = words[idx++];
-          }
-        }
-        // center is free
-        grid[2][2] = "FREE";
-        marked[2][2] = true;
-
-        return { grid, marked, bingoShown:false };
-      }
-
-      function maybeVibrate(){
-        if(window.navigator && "vibrate" in window.navigator){
-          try{ window.navigator.vibrate(15); }catch(e){}
+    function buildCardWords(){
+      // pick 24 unique words + center free
+      const picks = shuffle(WORD_POOL).slice(0, 24);
+      const words = [];
+      let p = 0;
+      for(let i=0;i<25;i++){
+        if(i === 12){
+          words.push("__FREE__");
+        } else {
+          words.push(picks[p++]);
         }
       }
+      return words;
+    }
 
-      function renderActiveCard(){
-        bingoGrid.innerHTML = "";
-        const card = cards[activeCardIndex];
-        if(!card) return;
+    function renderGrid(words, marks){
+      gridEl.innerHTML = "";
 
-        let colorIdx = 0;
+      words.forEach((w, idx) => {
+        const cell = document.createElement("div");
+        cell.className = "cell";
+        cell.setAttribute("role","button");
+        cell.setAttribute("tabindex","0");
+        cell.dataset.idx = String(idx);
 
-        for(let r=0; r<5; r++){
-          for(let c=0; c<5; c++){
-            const btn = document.createElement("button");
-            btn.type = "button";
-            btn.className = "bingo-cell";
-            btn.dataset.row = String(r);
-            btn.dataset.col = String(c);
+        // color class rotation to mimic sample
+        const colorClass = ["c1","c2","c3","c4","c5"][idx % 5];
 
-            const isFree = (r===2 && c===2);
-            btn.dataset.free = isFree ? "true" : "false";
-            if(isFree) btn.classList.add("free");
+        if(w === "__FREE__"){
+          cell.classList.add("free");
+          cell.innerHTML = `
+            <div class="freeInner" aria-label="Free space">
+              <span>D</span>
+              ${pawSVG}
+              <span>G</span>
+            </div>
+          `;
+        } else {
+          const span = document.createElement("div");
+          span.className = `word ${colorClass}`;
+          span.textContent = w;
+          cell.appendChild(span);
+        }
 
-            const span = document.createElement("div");
-            span.className = "value";
+        const isMarked = !!marks[idx];
+        if(isMarked) cell.classList.add("marked");
 
-            if(isFree){
-              span.innerHTML = `
-                <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
-                  <div class="heartBadge">💚</div>
-                  <div>FREE</div>
-                </div>
-              `;
-            }else{
-              const colorClass = COLORS[colorIdx % COLORS.length];
-              colorIdx++;
-              span.classList.add(colorClass);
-              span.textContent = card.grid[r][c];
+        if(w !== "__FREE__"){
+          const toggle = () => {
+            marks[idx] = !marks[idx];
+            cell.classList.toggle("marked", marks[idx]);
+            saveMarks(marks);
+            // small haptic-like feel on mobile (supported browsers only)
+            if (navigator.vibrate) navigator.vibrate(12);
+          };
+
+          cell.addEventListener("click", toggle);
+          cell.addEventListener("keydown", (e) => {
+            if(e.key === "Enter" || e.key === " "){
+              e.preventDefault();
+              toggle();
             }
-
-            btn.appendChild(span);
-
-            if(card.marked[r][c]) btn.classList.add("marked");
-
-            btn.addEventListener("click", () => handleCellClick(r,c,btn));
-            bingoGrid.appendChild(btn);
-          }
+          });
+        } else {
+          // always marked? no — leave unmarked (visual already distinct)
+          cell.setAttribute("aria-disabled","true");
         }
 
-        updateCardLabel();
-      }
-
-      function handleCellClick(r,c,el){
-        if(el.dataset.free === "true") return;
-        const card = cards[activeCardIndex];
-        card.marked[r][c] = !card.marked[r][c];
-        el.classList.toggle("marked", card.marked[r][c]);
-
-        el.classList.remove("pulse");
-        void el.offsetWidth;
-        el.classList.add("pulse");
-
-        maybeVibrate();
-        checkForBingo(card);
-      }
-
-      function updateCardLabel(){
-        const human = activeCardIndex + 1;
-        cardLabel.innerHTML = "<strong>Card " + human + "</strong> of " + cards.length;
-      }
-
-      function patternName(key){
-        if(key==="line") return "line bingo";
-        if(key==="x") return "X pattern bingo";
-        if(key==="corners") return "four corners bingo";
-        if(key==="full") return "full card bingo";
-        return "bingo";
-      }
-
-      function hasLine(marked){
-        const size = 5;
-        // rows
-        for(let r=0;r<size;r++){
-          if(marked[r].every(Boolean)) return true;
-        }
-        // cols
-        for(let c=0;c<size;c++){
-          let ok = true;
-          for(let r=0;r<size;r++){
-            if(!marked[r][c]){ ok=false; break; }
-          }
-          if(ok) return true;
-        }
-        // diagonals
-        let d1=true, d2=true;
-        for(let i=0;i<size;i++){
-          if(!marked[i][i]) d1=false;
-          if(!marked[i][size-1-i]) d2=false;
-        }
-        return d1 || d2;
-      }
-
-      function hasX(marked){
-        let d1=true, d2=true;
-        for(let i=0;i<5;i++){
-          if(!marked[i][i]) d1=false;
-          if(!marked[i][4-i]) d2=false;
-        }
-        return d1 && d2;
-      }
-
-      function hasCorners(marked){
-        return marked[0][0] && marked[0][4] && marked[4][0] && marked[4][4];
-      }
-
-      function hasFull(marked){
-        for(let r=0;r<5;r++){
-          for(let c=0;c<5;c++){
-            if(!marked[r][c]) return false;
-          }
-        }
-        return true;
-      }
-
-      function checkForBingo(card){
-        let win = false;
-        if(currentPattern==="line") win = hasLine(card.marked);
-        else if(currentPattern==="x") win = hasX(card.marked);
-        else if(currentPattern==="corners") win = hasCorners(card.marked);
-        else if(currentPattern==="full") win = hasFull(card.marked);
-
-        if(win && !card.bingoShown){
-          card.bingoShown = true;
-          const human = activeCardIndex + 1;
-          bingoBannerMsg.textContent = "You have " + patternName(currentPattern) + " on Card " + human + ". Tell the host.";
-          bingoBanner.classList.add("visible");
-          bingoToastText.textContent = "Bingo on Card " + human + "! Announce it on Zoom 🎙️";
-          triggerConfetti();
-          showToast();
-        }
-      }
-
-      function triggerConfetti(){
-        confettiOverlay.innerHTML = "";
-        confettiOverlay.classList.add("active");
-        const colors = ["#7ed9ff","#f594b9","#a78bd0","#a9e6a2","#ffc176","#97c8b8"];
-
-        const COUNT = 80;
-        for(let i=0;i<COUNT;i++){
-          const p = document.createElement("div");
-          p.className = "confetti-piece";
-          p.style.backgroundColor = colors[i % colors.length];
-          p.style.left = (Math.random()*100) + "%";
-          p.style.animationDelay = (Math.random()*0.6).toFixed(2) + "s";
-          p.style.setProperty("--x-move", ((Math.random()*160)-80).toFixed(1) + "px");
-          confettiOverlay.appendChild(p);
-        }
-
-        setTimeout(() => {
-          confettiOverlay.classList.remove("active");
-          confettiOverlay.innerHTML = "";
-        }, 1700);
-      }
-
-      let toastTimeout;
-      function showToast(){
-        clearTimeout(toastTimeout);
-        bingoToast.classList.add("visible");
-        toastTimeout = setTimeout(() => bingoToast.classList.remove("visible"), 4200);
-      }
-
-      function clearMarksForActiveCard(){
-        const card = cards[activeCardIndex];
-        for(let r=0;r<5;r++){
-          for(let c=0;c<5;c++){
-            card.marked[r][c] = false;
-          }
-        }
-        card.marked[2][2] = true;
-        card.bingoShown = false;
-        bingoBanner.classList.remove("visible");
-        bingoToast.classList.remove("visible");
-        renderActiveCard();
-      }
-
-      function replaceActiveCardWithNew(){
-        cards[activeCardIndex] = createCardData();
-        bingoBanner.classList.remove("visible");
-        bingoToast.classList.remove("visible");
-        renderActiveCard();
-      }
-
-      function resetAllCards(){
-        if(!confirm("Reset all cards on this device and start fresh?")) return;
-        cards = [createCardData()];
-        activeCardIndex = 0;
-        currentPattern = "line";
-        patternSelect.value = "line";
-        bingoBanner.classList.remove("visible");
-        bingoToast.classList.remove("visible");
-        renderActiveCard();
-      }
-
-      function setMode(mode){
-        const isPlayer = mode === "player";
-        playerModeBtn.classList.toggle("active", isPlayer);
-        hostModeBtn.classList.toggle("active", !isPlayer);
-        playerPanel.classList.toggle("hidden", !isPlayer);
-        hostPanel.classList.toggle("hidden", isPlayer);
-      }
-
-      function openPlayerMenu(){
-        playerMenu.classList.remove("hidden");
-        playerMenuBackdrop.classList.remove("hidden");
-        playerMenuToggleBtn.textContent = "✕";
-      }
-      function closePlayerMenu(){
-        playerMenu.classList.add("hidden");
-        playerMenuBackdrop.classList.add("hidden");
-        playerMenuToggleBtn.textContent = "⋯";
-      }
-
-      // Host caller (words)
-      function initCaller(){
-        callerPool = shuffle(WORD_POOL);
-        callerHistory = [];
-        currentCallDisplay.textContent = "—";
-        updateCalledList();
-        poolCountBadge.textContent = WORD_POOL.length + " items";
-      }
-
-      function drawNextWord(){
-        if(!callerPool.length){
-          alert("All items have been called.");
-          return;
-        }
-        const word = callerPool.shift();
-        callerHistory.unshift(word);
-        currentCallDisplay.textContent = word;
-        updateCalledList();
-      }
-
-      function updateCalledList(){
-        calledWordsList.innerHTML = "";
-        callerHistory.forEach(w => {
-          const pill = document.createElement("div");
-          pill.className = "host-pill";
-          pill.textContent = w;
-          calledWordsList.appendChild(pill);
-        });
-        calledCountLabel.textContent = callerHistory.length + " / " + WORD_POOL.length;
-      }
-
-      // Events
-      startGameBtn.addEventListener("click", () => splashScreen.classList.add("hidden"));
-
-      playerModeBtn.addEventListener("click", () => setMode("player"));
-      hostModeBtn.addEventListener("click", () => setMode("host"));
-
-      newCardBtn.addEventListener("click", replaceActiveCardWithNew);
-      clearMarksBtn.addEventListener("click", clearMarksForActiveCard);
-      resetAllBtn.addEventListener("click", resetAllCards);
-
-      addCardBtn.addEventListener("click", () => {
-        if(cards.length >= MAX_CARDS){
-          alert("You can play up to " + MAX_CARDS + " cards on this device.");
-          return;
-        }
-        cards.push(createCardData());
-        activeCardIndex = cards.length - 1;
-        bingoBanner.classList.remove("visible");
-        bingoToast.classList.remove("visible");
-        renderActiveCard();
+        gridEl.appendChild(cell);
       });
+    }
 
-      prevCardBtn.addEventListener("click", () => {
-        if(cards.length <= 1) return;
-        activeCardIndex = (activeCardIndex - 1 + cards.length) % cards.length;
-        bingoBanner.classList.remove("visible");
-        bingoToast.classList.remove("visible");
-        renderActiveCard();
+    function saveWords(words){ localStorage.setItem(STORAGE_KEY, JSON.stringify(words)); }
+    function loadWords(){
+      try{
+        const v = localStorage.getItem(STORAGE_KEY);
+        return v ? JSON.parse(v) : null;
+      }catch{ return null; }
+    }
+
+    function saveMarks(m){ localStorage.setItem(MARKS_KEY, JSON.stringify(m)); }
+    function loadMarks(){
+      try{
+        const v = localStorage.getItem(MARKS_KEY);
+        return v ? JSON.parse(v) : Array(25).fill(false);
+      }catch{ return Array(25).fill(false); }
+    }
+
+    function saveCalled(list){ localStorage.setItem(CALLED_KEY, JSON.stringify(list)); }
+    function loadCalled(){
+      try{
+        const v = localStorage.getItem(CALLED_KEY);
+        return v ? JSON.parse(v) : [];
+      }catch{ return []; }
+    }
+
+    function saveRemaining(list){ localStorage.setItem(REMAIN_KEY, JSON.stringify(list)); }
+    function loadRemaining(){
+      try{
+        const v = localStorage.getItem(REMAIN_KEY);
+        return v ? JSON.parse(v) : null;
+      }catch{ return null; }
+    }
+
+    function saveCurrent(w){ localStorage.setItem(CUR_KEY, w ?? ""); }
+    function loadCurrent(){ return localStorage.getItem(CUR_KEY) || "—"; }
+
+    function renderCalled(called){
+      calledListEl.innerHTML = "";
+      called.slice().reverse().forEach(w => {
+        const chip = document.createElement("div");
+        chip.className = "chip";
+        chip.textContent = w;
+        calledListEl.appendChild(chip);
       });
+    }
 
-      nextCardBtn.addEventListener("click", () => {
-        if(cards.length <= 1) return;
-        activeCardIndex = (activeCardIndex + 1) % cards.length;
-        bingoBanner.classList.remove("visible");
-        bingoToast.classList.remove("visible");
-        renderActiveCard();
+    function newCard(){
+      const words = buildCardWords();
+      const marks = Array(25).fill(false);
+      saveWords(words);
+      saveMarks(marks);
+      renderGrid(words, marks);
+    }
+
+    function clearMarks(){
+      const words = loadWords() || buildCardWords();
+      const marks = Array(25).fill(false);
+      saveWords(words);
+      saveMarks(marks);
+      renderGrid(words, marks);
+    }
+
+    function resetGame(){
+      // Reset everything: card + marks + called words + remaining draw deck
+      newCard();
+      const called = [];
+      const remaining = shuffle(WORD_POOL);
+      saveCalled(called);
+      saveRemaining(remaining);
+      saveCurrent("—");
+      currentWordEl.textContent = "—";
+      renderCalled(called);
+    }
+
+    function ensureHostDeck(){
+      let remaining = loadRemaining();
+      if(!remaining || !Array.isArray(remaining) || remaining.length === 0){
+        remaining = shuffle(WORD_POOL);
+        saveRemaining(remaining);
+      }
+      return remaining;
+    }
+
+    function drawWord(){
+      const called = loadCalled();
+      let remaining = ensureHostDeck();
+
+      if(remaining.length === 0){
+        currentWordEl.textContent = "No more words";
+        saveCurrent("No more words");
+        return;
+      }
+
+      const w = remaining.shift();
+      called.push(w);
+
+      saveRemaining(remaining);
+      saveCalled(called);
+      saveCurrent(w);
+
+      currentWordEl.textContent = w;
+      renderCalled(called);
+    }
+
+    // Boot
+    (function init(){
+      const words = loadWords() || buildCardWords();
+      const marks = loadMarks();
+      saveWords(words);
+      saveMarks(marks);
+      renderGrid(words, marks);
+
+      const called = loadCalled();
+      renderCalled(called);
+
+      currentWordEl.textContent = loadCurrent();
+
+      // initialize remaining deck if missing (keeps host tool ready)
+      if(!loadRemaining()) saveRemaining(shuffle(WORD_POOL));
+
+      document.getElementById("newCardBtn").addEventListener("click", () => {
+        newCard();
       });
-
-      patternSelect.addEventListener("change", () => {
-        currentPattern = patternSelect.value;
-        bingoBanner.classList.remove("visible");
-        bingoToast.classList.remove("visible");
-        cards.forEach(c => c.bingoShown = false);
+      document.getElementById("clearMarksBtn").addEventListener("click", () => {
+        clearMarks();
       });
-
-      playerMenuToggleBtn.addEventListener("click", () => {
-        const isHidden = playerMenu.classList.contains("hidden");
-        isHidden ? openPlayerMenu() : closePlayerMenu();
+      document.getElementById("resetGameBtn").addEventListener("click", () => {
+        resetGame();
       });
-
-      playerMenuBackdrop.addEventListener("click", closePlayerMenu);
-
-      nextWordBtn.addEventListener("click", drawNextWord);
-      resetCallerBtn.addEventListener("click", () => {
-        if(confirm("Reset the caller and clear all called items?")) initCaller();
+      document.getElementById("drawBtn").addEventListener("click", () => {
+        drawWord();
       });
-
-      // Init
-      cards = [createCardData()];
-      activeCardIndex = 0;
-      currentPattern = "line";
-      patternSelect.value = "line";
-      setMode("player");
-      renderActiveCard();
-      initCaller();
     })();
   </script>
 </body>
