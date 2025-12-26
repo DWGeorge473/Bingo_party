@@ -802,426 +802,481 @@
   </div>
 
   <script>
-    (function(){
-      const WORD_POOL = [
-        "diapers","wipes","onesie","bib","burp cloth","pacifier","bottle","bottle brush","bottle warmer","bottle holder",
-        "formula","breast pump","nursing pad","milk","rattle","teether","teething rings","blanket","receiving blanket","swaddle",
-        "swaddle wrap","mittens","booties","hat","socks","pajamas","romper","baby lotion","baby wash","baby shampoo",
-        "thermometer","baby oil","diaper cream","changing pad","changing table","diaper bag","diaper pail","diaper pin","washcloths",
-        "hooded towel","crib","crib sheet","bassinet","playard","stroller","car seat","baby carrier","baby sling",
-        "rocking chair","baby swing","bouncer","high chair","baby monitor","night light","humidifier","sound machine","teddy bear","plush toy",
-        "stuffed animal","board book","storybook","baby bath","bath tub","grooming kit","hair brush","baby comb",
-        "play mat","toy set","stacking cups","soft blocks","tummy time","baby mobile","stork","piggy bank","gift card",
-        "spoons","sippy cup","cup","bowl","plates","snack cup","feeding bibs","baby food","walker","baby shoes",
-        "jumper","pacifier clip","laundry detergent","baby hangers","drawer dividers","travel crib","stroller fan","car mirror","sun shade"
-      ];
+  (function(){
+    const WORD_POOL = [
+      "diapers","wipes","onesie","bib","burp cloth","pacifier","bottle","bottle brush","bottle warmer","bottle holder",
+      "formula","breast pump","nursing pad","milk","rattle","teether","teething rings","blanket","receiving blanket","swaddle",
+      "swaddle wrap","mittens","booties","hat","socks","pajamas","romper","baby lotion","baby wash","baby shampoo",
+      "thermometer","baby oil","diaper cream","changing pad","changing table","diaper bag","diaper pail","diaper pin","washcloths",
+      "hooded towel","crib","crib sheet","bassinet","playard","stroller","car seat","baby carrier","baby sling",
+      "rocking chair","baby swing","bouncer","high chair","baby monitor","night light","humidifier","sound machine","teddy bear","plush toy",
+      "stuffed animal","board book","storybook","baby bath","bath tub","grooming kit","hair brush","baby comb",
+      "play mat","toy set","stacking cups","soft blocks","tummy time","baby mobile","stork","piggy bank","gift card",
+      "spoons","sippy cup","cup","bowl","plates","snack cup","feeding bibs","baby food","walker","baby shoes",
+      "jumper","pacifier clip","laundry detergent","baby hangers","drawer dividers","travel crib","stroller fan","car mirror","sun shade"
+    ];
 
-      const COLORS = ["c1","c2","c3","c4","c5"];
+    const COLORS = ["c1","c2","c3","c4","c5"];
 
-      const bingoGrid = document.getElementById("bingoGrid");
-      const clearMarksBtn = document.getElementById("clearMarksBtn");
-      const resetAllBtn = document.getElementById("resetAllBtn");
+    const bingoGrid = document.getElementById("bingoGrid");
+    const clearMarksBtn = document.getElementById("clearMarksBtn");
+    const resetAllBtn = document.getElementById("resetAllBtn");
 
-      const bingoBanner = document.getElementById("bingoBanner");
-      const bingoBannerMsg = document.getElementById("bingoBannerMsg");
+    const bingoBanner = document.getElementById("bingoBanner");
+    const bingoBannerMsg = document.getElementById("bingoBannerMsg");
 
-      const confettiOverlay = document.getElementById("confettiOverlay");
-      const bingoToast = document.getElementById("bingoToast");
-      const bingoToastText = document.getElementById("bingoToastText");
+    const confettiOverlay = document.getElementById("confettiOverlay");
+    const bingoToast = document.getElementById("bingoToast");
+    const bingoToastText = document.getElementById("bingoToastText");
 
-      const playerModeBtn = document.getElementById("playerModeBtn");
-      const hostModeBtn = document.getElementById("hostModeBtn");
-      const playerPanel = document.getElementById("playerPanel");
-      const hostPanel = document.getElementById("hostPanel");
+    const playerModeBtn = document.getElementById("playerModeBtn");
+    const hostModeBtn = document.getElementById("hostModeBtn");
+    const playerPanel = document.getElementById("playerPanel");
+    const hostPanel = document.getElementById("hostPanel");
 
-      const nextWordBtn = document.getElementById("nextWordBtn");
-      const resetCallerBtn = document.getElementById("resetCallerBtn");
-      const currentCallDisplay = document.getElementById("currentCallDisplay");
-      const calledWordsList = document.getElementById("calledWordsList");
-      const calledCountLabel = document.getElementById("calledCountLabel");
-      const poolCountBadge = document.getElementById("poolCountBadge");
+    const nextWordBtn = document.getElementById("nextWordBtn");
+    const resetCallerBtn = document.getElementById("resetCallerBtn");
+    const currentCallDisplay = document.getElementById("currentCallDisplay");
+    const calledWordsList = document.getElementById("calledWordsList");
+    const calledCountLabel = document.getElementById("calledCountLabel");
+    const poolCountBadge = document.getElementById("poolCountBadge");
 
-      const prevCardBtn = document.getElementById("prevCardBtn");
-      const nextCardBtn = document.getElementById("nextCardBtn");
-      const cardLabel = document.getElementById("cardLabel");
+    const prevCardBtn = document.getElementById("prevCardBtn");
+    const nextCardBtn = document.getElementById("nextCardBtn");
+    const cardLabel = document.getElementById("cardLabel");
 
-      const splashScreen = document.getElementById("splashScreen");
-      const startGameBtn = document.getElementById("startGameBtn");
+    const splashScreen = document.getElementById("splashScreen");
+    const startGameBtn = document.getElementById("startGameBtn");
 
-      const playerMenu = document.getElementById("playerMenu");
-      const playerMenuBackdrop = document.getElementById("playerMenuBackdrop");
-      const playerMenuToggleBtn = document.getElementById("playerMenuToggleBtn");
-      const menuCloseBtn = document.getElementById("menuCloseBtn");
-      const nextCardMenuBtn = document.getElementById("nextCardMenuBtn");
+    const playerMenu = document.getElementById("playerMenu");
+    const playerMenuBackdrop = document.getElementById("playerMenuBackdrop");
+    const playerMenuToggleBtn = document.getElementById("playerMenuToggleBtn");
+    const menuCloseBtn = document.getElementById("menuCloseBtn");
+    const nextCardMenuBtn = document.getElementById("nextCardMenuBtn");
 
-      const hostPatternBadge = document.getElementById("hostPatternBadge");
-      const hostPatternButtons = Array.from(document.querySelectorAll(".host-pbtn"));
+    const hostPatternBadge = document.getElementById("hostPatternBadge");
+    const hostPatternButtons = Array.from(document.querySelectorAll(".host-pbtn"));
 
-      let card = null;
-      let lastCardSignature = "";
+    // ✅ MULTI-CARD STATE
+    let cards = [];
+    let currentCardIndex = 0;
 
-      let callerPool = [];
-      let callerHistory = [];
+    let callerPool = [];
+    let callerHistory = [];
 
-      function shuffle(array){
-        const copy = array.slice();
-        for(let i = copy.length - 1; i > 0; i--){
-          const j = Math.floor(Math.random() * (i + 1));
-          [copy[i], copy[j]] = [copy[j], copy[i]];
-        }
-        return copy;
+    function shuffle(array){
+      const copy = array.slice();
+      for(let i = copy.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
       }
+      return copy;
+    }
 
-      function pickNUniqueWords(n){
-        const pool = shuffle(WORD_POOL);
-        return pool.slice(0, n);
-      }
+    function pickNUniqueWords(n){
+      const pool = shuffle(WORD_POOL);
+      return pool.slice(0, n);
+    }
 
-      function createCardData(){
-        const words = pickNUniqueWords(24);
-        const grid = Array.from({length:5}, () => Array.from({length:5}, () => ""));
-        const marked = Array.from({length:5}, () => Array.from({length:5}, () => false));
-        let idx = 0;
+    function createCardData(){
+      const words = pickNUniqueWords(24);
+      const grid = Array.from({length:5}, () => Array.from({length:5}, () => ""));
+      const marked = Array.from({length:5}, () => Array.from({length:5}, () => false));
+      let idx = 0;
 
-        for(let r=0; r<5; r++){
-          for(let c=0; c<5; c++){
-            if(r===2 && c===2) continue;
-            grid[r][c] = words[idx++];
-          }
-        }
-
-        grid[2][2] = "FREE";
-        marked[2][2] = true;
-
-        return { grid, marked, bingoShown:false };
-      }
-
-      function signatureForCard(c){
-        // Stable signature for "did this actually change?"
-        // (Ignore center)
-        const flat = [];
-        for(let r=0;r<5;r++){
-          for(let c2=0;c2<5;c2++){
-            if(r===2 && c2===2) continue;
-            flat.push(String(c.grid[r][c2]).toLowerCase());
-          }
-        }
-        return flat.join("|");
-      }
-
-      function pawSvg(){
-        return `
-          <svg class="pawAmp" viewBox="0 0 64 64" aria-hidden="true">
-            <path fill="rgba(43,43,43,0.78)" d="M20.5 27.5c-3.3 0-6-3.4-6-7.5S17.2 12.5 20.5 12.5s6 3.4 6 7.5-2.7 7.5-6 7.5zm23 0c-3.3 0-6-3.4-6-7.5s2.7-7.5 6-7.5 6 3.4 6 7.5-2.7 7.5-6 7.5zM12.8 36.4c-3 0-5.5-2.9-5.5-6.4s2.4-6.4 5.5-6.4 5.5 2.9 5.5 6.4-2.4 6.4-5.5 6.4zm38.4 0c-3 0-5.5-2.9-5.5-6.4s2.4-6.4 5.5-6.4 5.5 2.9 5.5 6.4-2.4 6.4-5.5 6.4z"/>
-            <path fill="rgba(43,43,43,0.78)" d="M32 56c-10.7 0-18.8-6.7-18.8-14.6 0-6.8 5.9-12.5 14.1-13.9 1.7-.3 3.5.5 4.7 1.9 1.2-1.4 3-2.2 4.7-1.9 8.2 1.4 14.1 7.1 14.1 13.9C50.8 49.3 42.7 56 32 56z"/>
-          </svg>
-        `;
-      }
-
-      function maybeVibrate(){
-        if(window.navigator && "vibrate" in window.navigator){
-          try{ window.navigator.vibrate(15); }catch(e){}
+      for(let r=0; r<5; r++){
+        for(let c=0; c<5; c++){
+          if(r===2 && c===2) continue;
+          grid[r][c] = words[idx++];
         }
       }
 
-      function renderCard(){
-        bingoGrid.innerHTML = "";
-        if(!card) return;
+      grid[2][2] = "FREE";
+      marked[2][2] = true;
 
-        let colorIdx = 0;
+      return { grid, marked, bingoShown:false };
+    }
 
-        for(let r=0; r<5; r++){
-          for(let c=0; c<5; c++){
-            const btn = document.createElement("button");
-            btn.type = "button";
-            btn.className = "bingo-cell";
-            btn.dataset.free = (r===2 && c===2) ? "true" : "false";
-            if(btn.dataset.free === "true") btn.classList.add("free");
+    function signatureForCard(card){
+      const flat = [];
+      for(let r=0;r<5;r++){
+        for(let c=0;c<5;c++){
+          if(r===2 && c===2) continue;
+          flat.push(String(card.grid[r][c]).toLowerCase());
+        }
+      }
+      return flat.join("|");
+    }
 
-            const span = document.createElement("div");
-            span.className = "value";
+    function getCurrentCard(){
+      return cards[currentCardIndex] || null;
+    }
 
-            if(btn.dataset.free === "true"){
-              span.innerHTML = `
-                <div class="freeMark">
-                  <div class="freeDG">
-                    <span>D</span>
-                    ${pawSvg()}
-                    <span>G</span>
-                  </div>
-                  <div class="freeSmall">FREE SPACE</div>
+    function pawSvg(){
+      return `
+        <svg class="pawAmp" viewBox="0 0 64 64" aria-hidden="true">
+          <path fill="rgba(43,43,43,0.78)" d="M20.5 27.5c-3.3 0-6-3.4-6-7.5S17.2 12.5 20.5 12.5s6 3.4 6 7.5-2.7 7.5-6 7.5zm23 0c-3.3 0-6-3.4-6-7.5s2.7-7.5 6-7.5 6 3.4 6 7.5-2.7 7.5-6 7.5zM12.8 36.4c-3 0-5.5-2.9-5.5-6.4s2.4-6.4 5.5-6.4 5.5 2.9 5.5 6.4-2.4 6.4-5.5 6.4zm38.4 0c-3 0-5.5-2.9-5.5-6.4s2.4-6.4 5.5-6.4 5.5 2.9 5.5 6.4-2.4 6.4-5.5 6.4z"/>
+          <path fill="rgba(43,43,43,0.78)" d="M32 56c-10.7 0-18.8-6.7-18.8-14.6 0-6.8 5.9-12.5 14.1-13.9 1.7-.3 3.5.5 4.7 1.9 1.2-1.4 3-2.2 4.7-1.9 8.2 1.4 14.1 7.1 14.1 13.9C50.8 49.3 42.7 56 32 56z"/>
+        </svg>
+      `;
+    }
+
+    function maybeVibrate(){
+      if(window.navigator && "vibrate" in window.navigator){
+        try{ window.navigator.vibrate(15); }catch(e){}
+      }
+    }
+
+    function updateCardNavUI(){
+      const total = cards.length || 1;
+      const idx = Math.min(currentCardIndex + 1, total);
+      cardLabel.innerHTML = `<strong>Card ${idx}</strong> of ${total}`;
+
+      // Enable/disable arrows
+      const canPrev = currentCardIndex > 0;
+      const canNext = currentCardIndex < total - 1;
+
+      prevCardBtn.disabled = !canPrev;
+      nextCardBtn.disabled = !canNext;
+      prevCardBtn.style.opacity = canPrev ? "1" : "0.45";
+      nextCardBtn.style.opacity = canNext ? "1" : "0.45";
+    }
+
+    function renderCard(){
+      bingoGrid.innerHTML = "";
+      const card = getCurrentCard();
+      if(!card) return;
+
+      let colorIdx = 0;
+
+      for(let r=0; r<5; r++){
+        for(let c=0; c<5; c++){
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "bingo-cell";
+          btn.dataset.free = (r===2 && c===2) ? "true" : "false";
+          if(btn.dataset.free === "true") btn.classList.add("free");
+
+          const span = document.createElement("div");
+          span.className = "value";
+
+          if(btn.dataset.free === "true"){
+            span.innerHTML = `
+              <div class="freeMark">
+                <div class="freeDG">
+                  <span>D</span>
+                  ${pawSvg()}
+                  <span>G</span>
                 </div>
-              `;
-            }else{
-              const colorClass = COLORS[colorIdx % COLORS.length];
-              colorIdx++;
-              span.classList.add(colorClass);
-              span.textContent = card.grid[r][c];
-            }
-
-            btn.appendChild(span);
-
-            if(card.marked[r][c]) btn.classList.add("marked");
-            btn.addEventListener("click", () => handleCellClick(r,c,btn));
-
-            bingoGrid.appendChild(btn);
+                <div class="freeSmall">FREE SPACE</div>
+              </div>
+            `;
+          }else{
+            const colorClass = COLORS[colorIdx % COLORS.length];
+            colorIdx++;
+            span.classList.add(colorClass);
+            span.textContent = card.grid[r][c];
           }
+
+          btn.appendChild(span);
+
+          if(card.marked[r][c]) btn.classList.add("marked");
+          btn.addEventListener("click", () => handleCellClick(r,c,btn));
+
+          bingoGrid.appendChild(btn);
         }
-
-        cardLabel.innerHTML = "<strong>Card 1</strong> of 1";
       }
 
-      function handleCellClick(r,c,el){
-        if(el.dataset.free === "true") return;
+      updateCardNavUI();
+    }
 
-        card.marked[r][c] = !card.marked[r][c];
-        el.classList.toggle("marked", card.marked[r][c]);
+    function handleCellClick(r,c,el){
+      const card = getCurrentCard();
+      if(!card) return;
+      if(el.dataset.free === "true") return;
 
-        el.classList.remove("pulse");
-        void el.offsetWidth;
-        el.classList.add("pulse");
+      card.marked[r][c] = !card.marked[r][c];
+      el.classList.toggle("marked", card.marked[r][c]);
 
-        maybeVibrate();
-        checkForBingoAnyPattern();
+      el.classList.remove("pulse");
+      void el.offsetWidth;
+      el.classList.add("pulse");
+
+      maybeVibrate();
+      checkForBingoAnyPattern();
+    }
+
+    function hasLine(marked){
+      const size = 5;
+      for(let r=0;r<size;r++){
+        if(marked[r].every(Boolean)) return true;
       }
-
-      function hasLine(marked){
-        const size = 5;
+      for(let c=0;c<size;c++){
+        let ok = true;
         for(let r=0;r<size;r++){
-          if(marked[r].every(Boolean)) return true;
+          if(!marked[r][c]){ ok=false; break; }
         }
-        for(let c=0;c<size;c++){
-          let ok = true;
-          for(let r=0;r<size;r++){
-            if(!marked[r][c]){ ok=false; break; }
-          }
-          if(ok) return true;
-        }
-        let d1=true, d2=true;
-        for(let i=0;i<size;i++){
-          if(!marked[i][i]) d1=false;
-          if(!marked[i][size-1-i]) d2=false;
-        }
-        return d1 || d2;
+        if(ok) return true;
       }
-      function hasX(marked){
-        let d1=true, d2=true;
-        for(let i=0;i<5;i++){
-          if(!marked[i][i]) d1=false;
-          if(!marked[i][4-i]) d2=false;
-        }
-        return d1 && d2;
+      let d1=true, d2=true;
+      for(let i=0;i<size;i++){
+        if(!marked[i][i]) d1=false;
+        if(!marked[i][size-1-i]) d2=false;
       }
-      function hasCorners(marked){
-        return marked[0][0] && marked[0][4] && marked[4][0] && marked[4][4];
+      return d1 || d2;
+    }
+    function hasX(marked){
+      let d1=true, d2=true;
+      for(let i=0;i<5;i++){
+        if(!marked[i][i]) d1=false;
+        if(!marked[i][4-i]) d2=false;
       }
-      function hasFull(marked){
-        for(let r=0;r<5;r++){
-          for(let c=0;c<5;c++){
-            if(!marked[r][c]) return false;
-          }
-        }
-        return true;
-      }
-
-      function checkForBingoAnyPattern(){
-        if(card.bingoShown) return;
-
-        const wins = [];
-        if(hasLine(card.marked)) wins.push("Line");
-        if(hasX(card.marked)) wins.push("X");
-        if(hasCorners(card.marked)) wins.push("4 Corners");
-        if(hasFull(card.marked)) wins.push("Blackout");
-
-        if(wins.length){
-          card.bingoShown = true;
-          const msg = wins.length === 1
-            ? `You have a ${wins[0]} bingo. Tell the host.`
-            : `You match these patterns: ${wins.join(", ")}. Tell the host which one counts.`;
-
-          bingoBannerMsg.textContent = msg;
-          bingoBanner.classList.add("visible");
-
-          bingoToastText.textContent = "Bingo! Announce it on Zoom 🎙️";
-          triggerConfetti();
-          showToast();
+      return d1 && d2;
+    }
+    function hasCorners(marked){
+      return marked[0][0] && marked[0][4] && marked[4][0] && marked[4][4];
+    }
+    function hasFull(marked){
+      for(let r=0;r<5;r++){
+        for(let c=0;c<5;c++){
+          if(!marked[r][c]) return false;
         }
       }
+      return true;
+    }
 
-      function triggerConfetti(){
+    function checkForBingoAnyPattern(){
+      const card = getCurrentCard();
+      if(!card) return;
+      if(card.bingoShown) return;
+
+      const wins = [];
+      if(hasLine(card.marked)) wins.push("Line");
+      if(hasX(card.marked)) wins.push("X");
+      if(hasCorners(card.marked)) wins.push("4 Corners");
+      if(hasFull(card.marked)) wins.push("Blackout");
+
+      if(wins.length){
+        card.bingoShown = true;
+        const msg = wins.length === 1
+          ? `You have a ${wins[0]} bingo. Tell the host.`
+          : `You match these patterns: ${wins.join(", ")}. Tell the host which one counts.`;
+
+        bingoBannerMsg.textContent = msg;
+        bingoBanner.classList.add("visible");
+
+        bingoToastText.textContent = "Bingo! Announce it on Zoom 🎙️";
+        triggerConfetti();
+        showToast();
+      }
+    }
+
+    function triggerConfetti(){
+      confettiOverlay.innerHTML = "";
+      confettiOverlay.classList.add("active");
+      const colors = ["#7ed9ff","#f594b9","#a78bd0","#a9e6a2","#ffc176","#97c8b8"];
+
+      const COUNT = 80;
+      for(let i=0;i<COUNT;i++){
+        const p = document.createElement("div");
+        p.className = "confetti-piece";
+        p.style.backgroundColor = colors[i % colors.length];
+        p.style.left = (Math.random()*100) + "%";
+        p.style.animationDelay = (Math.random()*0.6).toFixed(2) + "s";
+        p.style.setProperty("--x-move", ((Math.random()*160)-80).toFixed(1) + "px");
+        confettiOverlay.appendChild(p);
+      }
+
+      setTimeout(() => {
+        confettiOverlay.classList.remove("active");
         confettiOverlay.innerHTML = "";
-        confettiOverlay.classList.add("active");
-        const colors = ["#7ed9ff","#f594b9","#a78bd0","#a9e6a2","#ffc176","#97c8b8"];
+      }, 1700);
+    }
 
-        const COUNT = 80;
-        for(let i=0;i<COUNT;i++){
-          const p = document.createElement("div");
-          p.className = "confetti-piece";
-          p.style.backgroundColor = colors[i % colors.length];
-          p.style.left = (Math.random()*100) + "%";
-          p.style.animationDelay = (Math.random()*0.6).toFixed(2) + "s";
-          p.style.setProperty("--x-move", ((Math.random()*160)-80).toFixed(1) + "px");
-          confettiOverlay.appendChild(p);
+    let toastTimeout;
+    function showToast(){
+      clearTimeout(toastTimeout);
+      bingoToast.classList.add("visible");
+      toastTimeout = setTimeout(() => bingoToast.classList.remove("visible"), 4200);
+    }
+
+    function clearMarks(){
+      const card = getCurrentCard();
+      if(!card) return;
+
+      for(let r=0;r<5;r++){
+        for(let c=0;c<5;c++){
+          card.marked[r][c] = false;
         }
-
-        setTimeout(() => {
-          confettiOverlay.classList.remove("active");
-          confettiOverlay.innerHTML = "";
-        }, 1700);
       }
+      card.marked[2][2] = true;
+      card.bingoShown = false;
 
-      let toastTimeout;
-      function showToast(){
-        clearTimeout(toastTimeout);
-        bingoToast.classList.add("visible");
-        toastTimeout = setTimeout(() => bingoToast.classList.remove("visible"), 4200);
-      }
+      bingoBanner.classList.remove("visible");
+      bingoToast.classList.remove("visible");
+      renderCard();
+    }
 
-      function clearMarks(){
-        for(let r=0;r<5;r++){
-          for(let c=0;c<5;c++){
-            card.marked[r][c] = false;
-          }
-        }
-        card.marked[2][2] = true;
-        card.bingoShown = false;
-        bingoBanner.classList.remove("visible");
-        bingoToast.classList.remove("visible");
-        renderCard();
-      }
+    // ✅ THIS IS THE KEY FIX:
+    // Create a NEW card, switch to it, then close menu.
+    function createNewCardAndGoToIt(){
+      const current = getCurrentCard();
+      const currentSig = current ? signatureForCard(current) : "";
 
-      function replaceCardWithNew(){
-        // Ensure "new card" is truly new (not identical)
-        let attempts = 0;
-        let next;
-        let sig;
-        do{
-          next = createCardData();
-          sig = signatureForCard(next);
-          attempts++;
-        }while(sig === lastCardSignature && attempts < 12);
+      let attempts = 0;
+      let next;
+      let sig;
+      do{
+        next = createCardData();
+        sig = signatureForCard(next);
+        attempts++;
+      }while(sig === currentSig && attempts < 12);
 
-        card = next;
-        lastCardSignature = sig;
+      cards.push(next);
+      currentCardIndex = cards.length - 1;
 
-        bingoBanner.classList.remove("visible");
-        bingoToast.classList.remove("visible");
-        renderCard();
-      }
+      bingoBanner.classList.remove("visible");
+      bingoToast.classList.remove("visible");
+      renderCard();
+    }
 
-      function resetAll(){
-        if(!confirm("Reset everything on this device and start fresh?")) return;
-        replaceCardWithNew();
-        closePlayerMenu();
-        initCaller();
-      }
+    function resetAll(){
+      if(!confirm("Reset everything on this device and start fresh?")) return;
 
-      function setMode(mode){
-        const isPlayer = mode === "player";
-        playerModeBtn.classList.toggle("active", isPlayer);
-        hostModeBtn.classList.toggle("active", !isPlayer);
-        playerPanel.classList.toggle("hidden", !isPlayer);
-        hostPanel.classList.toggle("hidden", isPlayer);
-      }
+      cards = [createCardData()];
+      currentCardIndex = 0;
 
-      function openPlayerMenu(){
-        playerMenu.classList.remove("hidden");
-        playerMenuBackdrop.classList.remove("hidden");
-      }
-      function closePlayerMenu(){
-        playerMenu.classList.add("hidden");
-        playerMenuBackdrop.classList.add("hidden");
-      }
-
-      function initCaller(){
-        callerPool = shuffle(WORD_POOL);
-        callerHistory = [];
-        currentCallDisplay.textContent = "—";
-        updateCalledList();
-        poolCountBadge.textContent = WORD_POOL.length + " items";
-      }
-
-      function drawNextWord(){
-        if(!callerPool.length){
-          alert("All items have been called.");
-          return;
-        }
-        const word = callerPool.shift();
-        callerHistory.unshift(word);
-        currentCallDisplay.textContent = word;
-        updateCalledList();
-      }
-
-      function updateCalledList(){
-        calledWordsList.innerHTML = "";
-        callerHistory.forEach(w => {
-          const pill = document.createElement("div");
-          pill.className = "host-pill";
-          pill.textContent = w;
-          calledWordsList.appendChild(pill);
-        });
-        calledCountLabel.textContent = callerHistory.length + " / " + WORD_POOL.length;
-      }
-
-      function setHostPattern(patternKey){
-        const map = { line:"Line", x:"X", corners:"4 Corners", full:"Blackout" };
-        hostPatternBadge.textContent = map[patternKey] || "Line";
-        hostPatternButtons.forEach(b => b.classList.toggle("active", b.dataset.pattern === patternKey));
-      }
-
-      // Events
-      startGameBtn.addEventListener("click", () => splashScreen.classList.add("hidden"));
-
-      playerModeBtn.addEventListener("click", () => setMode("player"));
-      hostModeBtn.addEventListener("click", () => setMode("host"));
-
-      clearMarksBtn.addEventListener("click", clearMarks);
-      resetAllBtn.addEventListener("click", resetAll);
-
-      // Menu open/close
-      playerMenuToggleBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const isHidden = playerMenu.classList.contains("hidden");
-        isHidden ? openPlayerMenu() : closePlayerMenu();
-      });
-
-      menuCloseBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        closePlayerMenu();
-      });
-
-      playerMenuBackdrop.addEventListener("click", closePlayerMenu);
-
-      // IMPORTANT FIX: Next card generates NEW card + closes menu
-      nextCardMenuBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        replaceCardWithNew();
-        closePlayerMenu();
-      });
-
-      // Arrows present but disabled visually; kept for layout consistency
-      prevCardBtn.addEventListener("click", () => {});
-      nextCardBtn.addEventListener("click", () => {});
-
-      // Host caller
-      nextWordBtn.addEventListener("click", drawNextWord);
-      resetCallerBtn.addEventListener("click", () => {
-        if(confirm("Reset the caller and clear all called items?")) initCaller();
-      });
-
-      hostPatternButtons.forEach(btn => {
-        btn.addEventListener("click", () => setHostPattern(btn.dataset.pattern));
-      });
-
-      // Init
-      replaceCardWithNew();          // sets card + signature + renders
-      setMode("player");
+      bingoBanner.classList.remove("visible");
+      bingoToast.classList.remove("visible");
+      closePlayerMenu();
+      renderCard();
       initCaller();
-      setHostPattern("line");
-    })();
-  </script>
+    }
+
+    function setMode(mode){
+      const isPlayer = mode === "player";
+      playerModeBtn.classList.toggle("active", isPlayer);
+      hostModeBtn.classList.toggle("active", !isPlayer);
+      playerPanel.classList.toggle("hidden", !isPlayer);
+      hostPanel.classList.toggle("hidden", isPlayer);
+    }
+
+    function openPlayerMenu(){
+      playerMenu.classList.remove("hidden");
+      playerMenuBackdrop.classList.remove("hidden");
+    }
+    function closePlayerMenu(){
+      playerMenu.classList.add("hidden");
+      playerMenuBackdrop.classList.add("hidden");
+    }
+
+    // Host caller
+    function initCaller(){
+      callerPool = shuffle(WORD_POOL);
+      callerHistory = [];
+      currentCallDisplay.textContent = "—";
+      updateCalledList();
+      poolCountBadge.textContent = WORD_POOL.length + " items";
+    }
+
+    function drawNextWord(){
+      if(!callerPool.length){
+        alert("All items have been called.");
+        return;
+      }
+      const word = callerPool.shift();
+      callerHistory.unshift(word);
+      currentCallDisplay.textContent = word;
+      updateCalledList();
+    }
+
+    function updateCalledList(){
+      calledWordsList.innerHTML = "";
+      callerHistory.forEach(w => {
+        const pill = document.createElement("div");
+        pill.className = "host-pill";
+        pill.textContent = w;
+        calledWordsList.appendChild(pill);
+      });
+      calledCountLabel.textContent = callerHistory.length + " / " + WORD_POOL.length;
+    }
+
+    function setHostPattern(patternKey){
+      const map = { line:"Line", x:"X", corners:"4 Corners", full:"Blackout" };
+      hostPatternBadge.textContent = map[patternKey] || "Line";
+      hostPatternButtons.forEach(b => b.classList.toggle("active", b.dataset.pattern === patternKey));
+    }
+
+    // Events
+    startGameBtn.addEventListener("click", () => splashScreen.classList.add("hidden"));
+
+    playerModeBtn.addEventListener("click", () => setMode("player"));
+    hostModeBtn.addEventListener("click", () => setMode("host"));
+
+    clearMarksBtn.addEventListener("click", clearMarks);
+    resetAllBtn.addEventListener("click", resetAll);
+
+    // Menu open/close
+    playerMenuToggleBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const isHidden = playerMenu.classList.contains("hidden");
+      isHidden ? openPlayerMenu() : closePlayerMenu();
+    });
+
+    menuCloseBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      closePlayerMenu();
+    });
+
+    playerMenuBackdrop.addEventListener("click", closePlayerMenu);
+
+    // ✅ FIXED: New card is CREATED (added), then menu closes
+    nextCardMenuBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      createNewCardAndGoToIt();
+      closePlayerMenu();
+    });
+
+    // ✅ Arrows now work (switch between created cards)
+    prevCardBtn.addEventListener("click", () => {
+      if(currentCardIndex > 0){
+        currentCardIndex--;
+        bingoBanner.classList.remove("visible");
+        bingoToast.classList.remove("visible");
+        renderCard();
+      }
+    });
+
+    nextCardBtn.addEventListener("click", () => {
+      if(currentCardIndex < cards.length - 1){
+        currentCardIndex++;
+        bingoBanner.classList.remove("visible");
+        bingoToast.classList.remove("visible");
+        renderCard();
+      }
+    });
+
+    // Host caller
+    nextWordBtn.addEventListener("click", drawNextWord);
+    resetCallerBtn.addEventListener("click", () => {
+      if(confirm("Reset the caller and clear all called items?")) initCaller();
+    });
+
+    hostPatternButtons.forEach(btn => {
+      btn.addEventListener("click", () => setHostPattern(btn.dataset.pattern));
+    });
+
+    // Init
+    cards = [createCardData()];
+    currentCardIndex = 0;
+    setMode("player");
+    renderCard();
+    initCaller();
+    setHostPattern("line");
+  })();
+</script>
 </body>
 </html>
